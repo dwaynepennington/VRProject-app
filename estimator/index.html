@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRProject · VREstimator — Industrial Takeoff &amp; Estimating</title>
+<meta name="description" content="VREstimator by VissRad: on-screen drawing takeoff with assemblies, a cost breakdown structure with labour, material, equipment and subcontract, and AACE Class 1-5 EPC estimating with man-hour libraries, Bid Desk, indirects, benchmark and what-if scenarios.">
+<link rel="icon" href="assets/vissrad.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/app_icon_32.png">
+<link rel="apple-touch-icon" href="assets/app_icon_256.png">
+<meta name="theme-color" content="#0d1014">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/shell.css">
+<link rel="stylesheet" href="estimating.css">
+<link rel="stylesheet" href="vrest.css">
+<link rel="stylesheet" href="../shared/vrproject.css">
+</head>
+<body>
+
+<div id="loading">
+  <img src="assets/vissrad_logo_light.png" alt="VissRad" id="load-logo">
+  <div class="t">Loading VREstimator&hellip;</div>
+</div>
+
+<div id="app" hidden>
+  <nav class="tabs" id="tabs"></nav>
+  <main id="views"></main>
+  <footer class="statusbar" id="statusbar"></footer>
+</div>
+
+<script>window.VR_STANDALONE = { title: "VREstimator", suite: "VRProject", home: "https://vissrad.com/", homeLabel: "VissRad \u2197", up: "../", file: true, tools: [{ label: "VRScheduler", href: "../index.html", title: "VRScheduler — CPM schedule editor and P6 schedule analysis" }, { label: "VREstimator", href: "../estimator/index.html", title: "VREstimator — drawing takeoff, assemblies and EPC estimating, sent to the schedule", active: true }, { label: "VRPlanner", href: "../planner/index.html", title: "VRPlanner — capital work planning: work steps, crews, equipment, loaded into the schedule" }, { label: "VRTAR", href: "../tar/index.html", title: "VRTAR — turnaround estimating" }, { label: "VRCMMS", href: "../cmms/index.html", title: "VRCMMS — maintenance management: assets, work orders, preventive maintenance and backlog" }], schedule: "../index.html#editor" };</script>
+<script src="shared/lib.js"></script>
+<script src="shared/shell.js"></script>
+<script src="shared/standalone.js"></script>
+<script src="shared/drawrefs.js"></script>
+<script src="shared/sheetio.js"></script>
+<script src="pdftakeoff.js"></script>
+<script src="board.js"></script>
+<script src="cbs.js"></script>
+<script src="crews.js"></script>
+<script src="dxf.js"></script>
+<script src="samples/cad/cad-demo.js"></script>
+<script src="cadtakeoff.js"></script>
+<script src="vendor/vrtar-writers.js"></script>
+<script src="schedule.js"></script>
+<script src="xio.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

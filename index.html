@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRProject · VRScheduler — CPM schedule editor and P6 schedule analysis</title>
+<meta name="description" content="VRScheduler by VissRad: a CPM schedule editor and Primavera P6 / Microsoft Project schedule analysis tool that runs in the browser — critical path, S-curve and FTE curve, earned value, float, look-ahead, WBS roll-up, baselines, DCMA 14-point checks and Monte Carlo risk. Files are read in the browser only.">
+<link rel="icon" href="assets/vissrad.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/app_icon_32.png">
+<link rel="apple-touch-icon" href="assets/app_icon_256.png">
+<meta name="theme-color" content="#0d1014">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared/shell.css?v=27bc91cec7">
+<link rel="stylesheet" href="schedule.css?v=bfd24555e3">
+<link rel="stylesheet" href="shared/vrproject.css">
+</head>
+<body>
+
+<div id="loading">
+  <img src="assets/vissrad_logo_light.png" alt="VissRad" id="load-logo">
+  <div class="t">Loading VRScheduler&hellip;</div>
+</div>
+
+<div id="app" hidden>
+  <nav class="tabs" id="tabs"></nav>
+  <main id="views"></main>
+  <footer class="statusbar" id="statusbar"></footer>
+</div>
+<script>window.VR_STANDALONE = { title: "VRScheduler", suite: "VRProject", home: "https://vissrad.com/", homeLabel: "VissRad \u2197", up: "", tools: [{ label: "VRScheduler", href: "index.html", title: "VRScheduler — CPM schedule editor and P6 schedule analysis", active: true }, { label: "VREstimator", href: "estimator/index.html", title: "VREstimator — drawing takeoff, assemblies and EPC estimating, sent to the schedule" }, { label: "VRPlanner", href: "planner/index.html", title: "VRPlanner — capital work planning: work steps, crews, equipment, loaded into the schedule" }, { label: "VRTAR", href: "tar/index.html", title: "VRTAR — turnaround estimating" }, { label: "VRCMMS", href: "cmms/index.html", title: "VRCMMS — maintenance management: assets, work orders, preventive maintenance and backlog" }] };</script>
+<script src="shared/lib.js?v=d5788ff27b"></script>
+<script src="shared/shell.js?v=d00909f766"></script>
+<script src="shared/standalone.js?v=d930425a92"></script>
+<script src="shared/xerParser.js?v=8958ff8be5"></script>
+<script src="app/metrics.js?v=67a4606bbc"></script>
+<script src="app/sample.js?v=529bb6605a"></script>
+<script src="app/cpm.js?v=b515c8afaa"></script>
+<script src="app/editor.js?v=de4868216b"></script>
+<script src="app.js?v=aa3345ec16"></script>
+</body>
+</html>

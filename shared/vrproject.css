@@ -1,0 +1,2 @@
+/* VRProject suite bar: brand label ahead of the tool switcher. */
+.modrail::before { content: "VRProject"; display: flex; align-items: center; font-family: Montserrat, Inter, sans-serif; font-weight: 800; font-size: 11px; letter-spacing: 1.1px; text-transform: uppercase; color: var(--accent, #E23A34); padding: 0 12px 0 2px; margin-right: 6px; border-right: 1px solid var(--border-hi, var(--border, #2E3440)); white-space: nowrap; }

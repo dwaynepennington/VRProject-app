@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="VRPlanner by VissRad: step out the work of a capital project into work steps, crew sizes, craft hours, equipment and materials, sequence it on a working calendar and load it into the VRScheduler Schedule Editor, Primavera P6 (XER) or Microsoft Project (MPX). Runs in the browser; the demonstration project is synthetic.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VRProject · VRPlanner — capital work planning for the schedule</title>
+<link rel="icon" href="../assets/vissrad.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/app_icon_32.png">
+<link rel="apple-touch-icon" href="../assets/app_icon_256.png">
+<meta name="theme-color" content="#0d1014">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/shell.css?v=27bc91cec7">
+<link rel="stylesheet" href="plan.css?v=c490eec7f7">
+<link rel="stylesheet" href="../shared/vrproject.css">
+</head>
+<body>
+
+<div id="loading">
+  <img src="../assets/vissrad_logo_light.png" alt="VissRad" id="load-logo">
+  <div class="t">Loading capital work module library&hellip;</div>
+</div>
+
+<div id="app" hidden>
+  <nav class="tabs" id="tabs"></nav>
+  <main id="views"></main>
+  <footer class="statusbar" id="statusbar"></footer>
+</div>
+<script>window.VR_STANDALONE = { title: "VRPlanner", suite: "VRProject", home: "https://vissrad.com/", homeLabel: "VissRad \u2197", up: "../", file: true, tools: [{ label: "VRScheduler", href: "../index.html", title: "VRScheduler — CPM schedule editor and P6 schedule analysis" }, { label: "VREstimator", href: "../estimator/index.html", title: "VREstimator — drawing takeoff, assemblies and EPC estimating, sent to the schedule" }, { label: "VRPlanner", href: "../planner/index.html", title: "VRPlanner — capital work planning: work steps, crews, equipment, loaded into the schedule", active: true }, { label: "VRTAR", href: "../tar/index.html", title: "VRTAR — turnaround estimating" }, { label: "VRCMMS", href: "../cmms/index.html", title: "VRCMMS — maintenance management: assets, work orders, preventive maintenance and backlog" }], schedule: "../index.html#editor" };</script>
+<script src="../shared/lib.js?v=d5788ff27b"></script>
+<script src="../shared/shell.js?v=d00909f766"></script>
+<script src="../shared/standalone.js?v=d930425a92"></script>
+<script src="../shared/drawrefs.js?v=2a538a7e9e"></script>
+<script src="../shared/zipWrite.js?v=bf99443f50"></script>
+<script src="../tar/app/engine.js?v=fbff2905e8"></script>
+<script src="app/writers.js?v=57ecd99b6e"></script>
+<script src="data.js?v=ecc1dcb02b"></script>
+<script src="app.js?v=d2b84253a2"></script>
+</body>
+</html>
