@@ -4,7 +4,7 @@
    One resource library with hourly (or per-unit) rates, shared by every
    module of the suite in the same browser and project: the Schedule Editor
    assigns resources to activities and costs them from it, Cost prices time
-   and materials tickets from its labour rates, and Estimating can send its
+   and materials tickets from its labor rates, and Estimating can send its
    craft rates to it. VRScheduler (the standalone schedule tool) keeps the
    same library on its own.
 
@@ -13,12 +13,12 @@
    other VissRad key, so each project carries its own contract rates; the
    demo has its own, seeded with synthetic rates.
 
-   A resource: { code, name, type: Labour | Equipment | Material | Subcontract,
+   A resource: { code, name, type: Labor | Equipment | Material | Subcontract,
      uom (hr, day, mo, ea ...), rates: [{ from: 'YYYY-MM-DD' | '', base, burden }],
      ot (overtime factor), max (units a day, optional), disc, notes }
    The all-in rate is base x (1 + burden %). The rate used on a date is the
    latest one whose 'from' is on or before it (the first one before them all).
-   P6 types: Labour -> RT_Labor, Equipment -> RT_Equip, Material and
+   P6 types: Labor -> RT_Labor, Equipment -> RT_Equip, Material and
    Subcontract -> RT_Mat.
 
    Changes are announced with the 'vissrad:resources' document event, in this
@@ -30,20 +30,20 @@
   if (global.VissRadResources) return;
 
   const KEY = 'vissrad.resources.v1';
-  const TYPES = ['Labour', 'Equipment', 'Material', 'Subcontract'];
-  const P6TYPE = { Labour: 'RT_Labor', Equipment: 'RT_Equip', Material: 'RT_Mat', Subcontract: 'RT_Mat' };
-  const FROM_P6 = { RT_Labor: 'Labour', RT_Equip: 'Equipment', RT_Mat: 'Material' };
+  const TYPES = ['Labor', 'Equipment', 'Material', 'Subcontract'];
+  const P6TYPE = { Labor: 'RT_Labor', Equipment: 'RT_Equip', Material: 'RT_Mat', Subcontract: 'RT_Mat' };
+  const FROM_P6 = { RT_Labor: 'Labor', RT_Equip: 'Equipment', RT_Mat: 'Material' };
   const UOMS = ['hr', 'day', 'wk', 'mo', 'ea', 'm', 'm2', 'm3', 't', 'lot'];
   const DIR = ((document.currentScript && document.currentScript.src) || '').replace(/[^/]*$/, '');
 
   /* Synthetic demonstration rates, the same as the Cost demo's resources. Not market data. */
   const EXAMPLE = [
-    ['PIPE-FT', 'Pipefitter', 'Labour', 'hr', 78.5], ['WELD-CS', 'Welder, carbon steel', 'Labour', 'hr', 84], ['WELD-AL', 'Welder, alloy', 'Labour', 'hr', 96],
-    ['ELEC-JW', 'Electrician, journeyman', 'Labour', 'hr', 81], ['INST-TC', 'Instrument technician', 'Labour', 'hr', 88], ['IRON-ST', 'Ironworker, structural', 'Labour', 'hr', 79],
-    ['CIVL-CR', 'Civil crew', 'Labour', 'hr', 68], ['MILL-RT', 'Millwright, rotating', 'Labour', 'hr', 92], ['SUPV-GF', 'General foreman', 'Labour', 'hr', 105],
-    ['ENGR-PR', 'Process engineer', 'Labour', 'hr', 148], ['ENGR-PI', 'Piping designer', 'Labour', 'hr', 126], ['PM-STF', 'Project management staff', 'Labour', 'hr', 162],
+    ['PIPE-FT', 'Pipefitter', 'Labor', 'hr', 78.5], ['WELD-CS', 'Welder, carbon steel', 'Labor', 'hr', 84], ['WELD-AL', 'Welder, alloy', 'Labor', 'hr', 96],
+    ['ELEC-JW', 'Electrician, journeyman', 'Labor', 'hr', 81], ['INST-TC', 'Instrument technician', 'Labor', 'hr', 88], ['IRON-ST', 'Ironworker, structural', 'Labor', 'hr', 79],
+    ['CIVL-CR', 'Civil crew', 'Labor', 'hr', 68], ['MILL-RT', 'Millwright, rotating', 'Labor', 'hr', 92], ['SUPV-GF', 'General foreman', 'Labor', 'hr', 105],
+    ['ENGR-PR', 'Process engineer', 'Labor', 'hr', 148], ['ENGR-PI', 'Piping designer', 'Labor', 'hr', 126], ['PM-STF', 'Project management staff', 'Labor', 'hr', 162],
     ['CRN-250', 'Crawler crane 250 t', 'Equipment', 'mo', 41500], ['CRN-090', 'Hydraulic crane 90 t', 'Equipment', 'mo', 17800], ['SCF-ERC', 'Scaffold, erect and dismantle', 'Subcontract', 'lot', 0],
-  ].map(([code, name, type, uom, rate]) => ({ code, name, type, uom, rates: [{ from: '', base: rate, burden: 0 }], ot: type === 'Labour' ? 1.5 : 1, max: '', disc: '', notes: 'Synthetic example rate' }));
+  ].map(([code, name, type, uom, rate]) => ({ code, name, type, uom, rates: [{ from: '', base: rate, burden: 0 }], ot: /^Labou?r$/.test(type) ? 1.5 : 1, max: '', disc: '', notes: 'Synthetic example rate' }));
 
   /* ------------------------------------------------------------ storage */
   const store = (() => {
@@ -57,15 +57,15 @@
 
   function norm(r) {
     r = r || {};
-    const type = TYPES.find((t) => t.toLowerCase() === String(r.type || '').trim().toLowerCase()) || FROM_P6[r.type] || 'Labour';
+    const type = TYPES.find((t) => t.toLowerCase() === String(r.type || '').trim().toLowerCase().replace(/labour$/, 'labor')) || FROM_P6[r.type] || 'Labor';
     let rates = Array.isArray(r.rates) && r.rates.length ? r.rates : [{ from: '', base: r.rate !== undefined ? r.rate : r.base, burden: r.burden }];
     rates = rates.map((x) => ({ from: isoOk(x.from) ? x.from : '', base: round(num(x.base), 4), burden: round(num(x.burden), 3) }))
       .sort((a, b) => (a.from || '').localeCompare(b.from || ''));
     const seen = new Set(); rates = rates.filter((x) => { if (seen.has(x.from)) return false; seen.add(x.from); return true; });
     return {
       code: String(r.code || '').trim().slice(0, 40), name: String(r.name || '').replace(/\s+/g, ' ').trim().slice(0, 120), type,
-      uom: String(r.uom || (type === 'Labour' ? 'hr' : 'ea')).trim().slice(0, 12) || 'hr', rates,
-      ot: r.ot === '' || r.ot === undefined || r.ot === null ? (type === 'Labour' ? 1.5 : 1) : round(num(r.ot, 1), 3),
+      uom: String(r.uom || (/^Labou?r$/.test(type) ? 'hr' : 'ea')).trim().slice(0, 12) || 'hr', rates,
+      ot: r.ot === '' || r.ot === undefined || r.ot === null ? (/^Labou?r$/.test(type) ? 1.5 : 1) : round(num(r.ot, 1), 3),
       max: r.max === '' || r.max === undefined || r.max === null ? '' : round(num(r.max), 3),
       disc: String(r.disc || '').trim().slice(0, 60), notes: String(r.notes || '').trim().slice(0, 300),
     };
@@ -76,6 +76,8 @@
       v = { v: 1, list: isDemo() ? EXAMPLE.map(norm) : [], updated: '' };
       if (isDemo()) store.set(JSON.stringify(v));
     }
+    // libraries saved before the Labor spelling
+    v.list = v.list.map((r) => (r && /^labour$/i.test(r.type) ? Object.assign({}, r, { type: 'Labor' }) : r));
     return v;
   }
   let CACHE = null;
@@ -201,7 +203,7 @@
       const code = String(src.rsrc_short_name || src.rsrc_id || '').trim().replace(/[\s,;@]+/g, '-');
       if (!code || seen.has(code.toLowerCase())) return;
       seen.add(code.toLowerCase());
-      const type = FROM_P6[src.rsrc_type] || 'Labour';
+      const type = FROM_P6[src.rsrc_type] || 'Labor';
       const by = new Map();
       (rates.get(String(src.rsrc_id)) || []).map((x) => ({ from: iso(x.start_date), base: num(x.cost_per_qty), max: x.max_qty_per_hr }))
         .sort((a, b) => a.from.localeCompare(b.from)).forEach((x) => by.set(x.from, x));
@@ -211,7 +213,7 @@
       const max = last && last.max !== '' && last.max !== undefined && isFinite(+last.max) ? round(+last.max * hpd, 2) : '';
       out.push(norm({ code, name: src.rsrc_name || code, type, uom: type === 'Material' ? (String(src.unit_abbrev || '').trim() || 'ea') : 'hr',
         rates: list.length ? list.map((x) => ({ from: x.from, base: x.base, burden: 0 })) : [{ from: '', base: 0, burden: 0 }],
-        ot: num(src.ot_factor) || (type === 'Labour' ? 1.5 : 1), max, disc: src.rsrc_title_name || '', notes: note }));
+        ot: num(src.ot_factor) || (/^Labou?r$/.test(type) ? 1.5 : 1), max, disc: src.rsrc_title_name || '', notes: note }));
     });
     return out;
   }
@@ -258,7 +260,7 @@
     function guard() { if (!canEdit()) { toast('Read-only access: you cannot change the resource library.', true); return false; } return true; }
     function edit(fn) { if (!guard()) return; const cur = list().map((r) => JSON.parse(JSON.stringify(r))); if (fn(cur) === false) return; save(cur, 'edit'); }
     function nextCode(cur) { let n = cur.length + 1; while (cur.some((r) => r.code.toLowerCase() === ('RES-' + String(n).padStart(3, '0')).toLowerCase())) n++; return 'RES-' + String(n).padStart(3, '0'); }
-    function add() { let code = ''; edit((cur) => { code = nextCode(cur); cur.push(norm({ code, name: 'New resource', type: 'Labour', uom: 'hr', rates: [{ from: '', base: 0, burden: 0 }] })); }); NEXT = { code, f: 'name' }; Q = ''; render(); }
+    function add() { let code = ''; edit((cur) => { code = nextCode(cur); cur.push(norm({ code, name: 'New resource', type: 'Labor', uom: 'hr', rates: [{ from: '', base: 0, burden: 0 }] })); }); NEXT = { code, f: 'name' }; Q = ''; render(); }
     function dup(r) { let code = ''; edit((cur) => { code = r.code + '-2'; let n = 2; while (cur.some((x) => x.code.toLowerCase() === code.toLowerCase())) code = r.code + '-' + (++n); cur.push(Object.assign(JSON.parse(JSON.stringify(r)), { code })); }); NEXT = { code, f: 'name' }; render(); }
     function del(r) {
       const u = opts.usage && opts.usage().get(r.code);
@@ -430,15 +432,15 @@
         const lr = r ? rateOn(r, o.date) : 0;
         const rt = E('input', { type: 'number', step: 'any', value: a.rate === undefined || a.rate === null ? '' : a.rate, placeholder: String(lr), style: 'width:90px', title: 'Blank: the library rate in force on the activity start. Type a rate to override it for this activity.' });
         rt.addEventListener('change', () => { if (rt.value === '') delete a.rate; else a.rate = num(rt.value); draw(); });
-        const rate = a.rate === undefined || a.rate === null ? lr : a.rate, cost = (+a.qty || 0) * rate; tot += cost; if (r && r.type === 'Labour' && isTimeUnit(r.uom)) hrs += +a.qty || 0;
+        const rate = a.rate === undefined || a.rate === null ? lr : a.rate, cost = (+a.qty || 0) * rate; tot += cost; if (r && /^Labou?r$/.test(r.type) && isTimeUnit(r.uom)) hrs += +a.qty || 0;
         const fill = o.hours ? E('button', { class: 'ghost', title: `Units = duration \u00d7 hours a day (${o.hours} h)`, onclick: () => { a.qty = o.hours; draw(); } }, '= duration') : null;
         tb.append(E('tr', {}, E('td', {}, s), E('td', {}, q, ' ', r ? r.uom : ''), E('td', {}, rt), E('td', { class: 'c', text: money(cost) }), E('td', {}, fill, E('button', { class: 'ghost', onclick: () => { rows.splice(i, 1); draw(); } }, 'Remove'))));
       });
       t.append(tb);
       body.append(t,
         E('div', { style: 'display:flex;gap:8px;align-items:center;margin-top:8px' },
-          E('button', { class: 'ghost', disabled: list().length ? null : true, onclick: () => { const used = new Set(rows.map((x) => x.r)); const r = list().find((x) => !used.has(x.code)) || list()[0]; if (r) { rows.push({ r: r.code, qty: o.hours && r.type === 'Labour' ? o.hours : 0 }); draw(); } } }, '+ Resource'),
-          E('span', { class: 'hint', text: `Total ${money(tot)}${hrs ? ` \u00b7 ${fmtNum(hrs)} labour hours` : ''}. Rates are in force on ${o.date || 'today'}.` })),
+          E('button', { class: 'ghost', disabled: list().length ? null : true, onclick: () => { const used = new Set(rows.map((x) => x.r)); const r = list().find((x) => !used.has(x.code)) || list()[0]; if (r) { rows.push({ r: r.code, qty: o.hours && /^Labou?r$/.test(r.type) ? o.hours : 0 }); draw(); } } }, '+ Resource'),
+          E('span', { class: 'hint', text: `Total ${money(tot)}${hrs ? ` \u00b7 ${fmtNum(hrs)} labor hours` : ''}. Rates are in force on ${o.date || 'today'}.` })),
         ...(list().length ? [] : [E('div', { class: 'hint', style: 'margin-top:6px', text: 'The resource library is empty: add resources on the Resources tab first.' })]));
     };
     draw();

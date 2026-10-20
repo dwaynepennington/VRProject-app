@@ -104,7 +104,7 @@ function xioApply(t, rows, mode) {
     const by = groupBy(rows.filter((r) => r.crew_id && r.resource), (r) => r.crew_id);
     for (const [id, list] of by) {
       let c = D.crews.find((x) => x.id === id); if (!c) { c = { id, name: id, discipline: '', shift_hours: 10, labor: [], equipment: [] }; D.crews.push(c); }
-      c.labor = list.filter((r) => r.kind === 'Labor').map((r) => ({ craft: r.resource, qty: num(r.qty) }));
+      c.labor = list.filter((r) => /^Labou?r$/.test(r.kind)).map((r) => ({ craft: r.resource, qty: num(r.qty) }));
       c.equipment = list.filter((r) => r.kind === 'Equipment').map((r) => ({ desc: r.resource, rate_hr: num(r.rate_hr), qty: num(r.qty) }));
     }
     return;
@@ -171,7 +171,7 @@ function viewData(root) {
       if (!keys.length) { prev.appendChild(el('div', { class: 'banner bad', text: `${f.name}: no sheet matched a VissRadEST table or a takeoff layout (Description, Quantity, Unit).` })); return; }
       const mode = el('select', {}, el('option', { value: 'merge' }, 'Merge: add new, update matching'), el('option', { value: 'replace' }, 'Replace the table'));
       const picks = {};
-      prev.append(el('div', { class: 'hint', style: 'margin:8px 0 4px', text: `${f.name}: ${keys.length} table(s) recognised` }),
+      prev.append(el('div', { class: 'hint', style: 'margin:8px 0 4px', text: `${f.name}: ${keys.length} table(s) recognized` }),
         el('div', { class: 'tbl-wrap' }, el('table', { class: 'data' },
           el('thead', {}, el('tr', {}, ['', 'Table', 'Sheet', 'Rows', 'Add', 'Change', 'Same', 'Skipped'].map((h, i) => el('th', { class: i > 2 ? 'num' : null, text: h })))),
           el('tbody', {}, keys.map((t) => { const d = xioDiff(t, found[t].rows); picks[t] = el('input', { type: 'checkbox', checked: true, 'aria-label': `Import ${t}` });
@@ -187,7 +187,7 @@ function viewData(root) {
         } }, 'Import ticked tables')));
     } catch (e) { prev.appendChild(el('div', { class: 'banner bad', text: `Could not read ${f.name}: ${e.message}` })); }
   }
-  const about = (title, extra) => ({ name: 'About this file', header: [title, ''], rows: [['Project', `${D.project.project_no} ${D.project.project_name}`], ['Written by', 'VREstimator (VissRad)'], ['Written', new Date().toISOString().slice(0, 16).replace('T', ' ')], ...extra] });
+  const about = (title, extra) => ({ name: 'About this file', header: [title, ''], rows: [['Project', `${D.project.project_no} ${D.project.project_name}`], ['Written by', `${EST_BRAND} (VissRad)`], ['Written', new Date().toISOString().slice(0, 16).replace('T', ' ')], ...extra] });
   function exportTables() {
     const sheets = [about('VissRadEST import workbook', [['Sheet names', 'Exactly the table name. Headings are exactly the field keys.'], ['How to load', 'VREstimator: Import / Export > Choose workbook. VissRadEST: Data > Link source > Pull.']])];
     Object.entries(XIO_TABLES).forEach(([t, d]) => sheets.push({ name: t, header: d.fields, rows: xioCurrent(t).map((r) => d.fields.map((f) => (r[f] === null || r[f] === undefined ? '' : r[f]))) }));
@@ -207,14 +207,14 @@ function viewData(root) {
       ['Field indirects', round2(R.fieldIndirects)], ['Owner costs', round2(R.ownerCost)], ['Escalation', round2(R.escalation)], ['Contingency', round2(R.contingency)], ['Total installed cost', round2(R.tic)],
       ['Accuracy low', round2(R.accLow)], ['Accuracy high', round2(R.accHigh)]];
     const disc = R.usedByDisc.map((u) => [u.disc.discipline, METHOD_LABEL[u.disc.method], round2(u.usedMh), round2(u.usedLabor), round2(u.usedMatl), round2(u.usedEquip), round2(u.usedSub), round2(u.usedDirect)]);
-    vrestDownloadXlsx(`VREstimator-summary-${D.project.project_no}.xlsx`, [
+    vrestDownloadXlsx(`${EST_BRAND}-summary-${D.project.project_no}.xlsx`, [
       { name: 'Build-up', header: ['Account', 'USD'], rows }, { name: 'By discipline', header: ['Discipline', 'Method', 'MH', 'Labor USD', 'Material USD', 'Equipment USD', 'Subcontract USD', 'Direct USD'], rows: disc }]);
   }
   function exportBoard() {
     const rows = D.board.items.map((it) => { const m = boardMeasure(it); const sh = bdSheet(it.sheet); const a = D.assemblies.find((x) => x.id === it.assembly);
       return [it.id, it.name, KIND_LABEL[it.kind], sh ? sh.name : '', it.page, it.area, it.marks.length, round2(m.Q), KIND_UNIT[it.kind], round2(m.P), num(it.depth_ft), num(it.height_ft), a ? a.name : it.master_key || '', boardLines(it).map((l) => l.line_no).join(' ')]; });
     const asm = []; D.assemblies.forEach((a) => a.rows.forEach((r, i) => asm.push([a.id, a.name, KIND_LABEL[a.kind], i + 1, r.master_key, r.formula, r.craft, r.weld_key || '', num(r.item_factor, 1)])));
-    vrestDownloadXlsx(`VREstimator-board-${D.project.project_no}.xlsx`, [
+    vrestDownloadXlsx(`${EST_BRAND}-board-${D.project.project_no}.xlsx`, [
       { name: 'Takeoff items', header: ['Item', 'Name', 'Kind', 'Sheet', 'Page', 'Area', 'Marks', 'Q', 'Unit', 'P (LF)', 'D ft', 'H ft', 'Priced with', 'Takeoff lines'], rows },
       { name: 'Assemblies', header: ['Assembly', 'Name', 'Kind', 'Row', 'Library key', 'Formula', 'Craft', 'Weld factor', 'Item factor'], rows: asm }]);
   }

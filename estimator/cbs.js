@@ -133,7 +133,7 @@ function viewCbs(root) {
     const head = ['Area', 'Discipline', 'Line', 'Library key', 'Description', 'Qty', 'UOM', 'Craft', 'Crew', 'MH', 'Labor USD', 'Material USD', 'Equipment USD', 'Subcontract USD', 'Total USD', 'In direct cost', 'Basis'];
     const rows = items.map((i) => [i.area, i.disc, i.l.line_no, i.l.master_key, i.l.description, num(i.l.quantity), i.l.uom, i.l.craft, i.l.crew || '', round2(i.c.totalMh), round2(i.c.laborCost), round2(i.c.materialCost), round2(i.c.equipCost), round2(i.c.subCost), round2(i.c.totalCost), i.flows ? 'Yes' : 'Held', i.l.source || '']);
     priced.forEach((p) => rows.push(['', p.disc, '', '', `${METHOD_LABEL[p.method]} (${p.label})`, '', '', '', (D.disciplines.find((x) => x.discipline === p.disc) || {}).crew || '', round2(p.mh), round2(p.labor), round2(p.matl), 0, 0, round2(p.total), 'Yes', p.label]));
-    await vrestDownloadXlsx(`VREstimator-CBS-${D.project.project_no}.xlsx`, [{ name: 'Cost breakdown', header: head, rows }]);
+    await vrestDownloadXlsx(`${EST_BRAND}-CBS-${D.project.project_no}.xlsx`, [{ name: 'Cost breakdown', header: head, rows }]);
   }
 }
 const round2 = (v) => Math.round(num(v) * 100) / 100;

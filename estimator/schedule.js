@@ -239,11 +239,11 @@ function schedBuild() {
   const clock = schedClock(S.start, startH, hpd, week);
   const p0 = D.project;
   const ctx = {
-    event: { code: schedSlug(p0.project_no || 'VREST', 20), name: `${p0.project_name || 'Estimate'} \u2014 construction schedule from VREstimator`, data_date: S.start, currency: p0.currency || 'USD', wbs_root: schedSlug(p0.project_no || 'VREST', 40), shutdown: `${S.start}T${String(Math.floor(startH)).padStart(2, '0')}:00` },
+    event: { code: schedSlug(p0.project_no || 'VREST', 20), name: `${p0.project_name || 'Estimate'} \u2014 construction schedule from ${EST_BRAND}`, data_date: S.start, currency: p0.currency || 'USD', wbs_root: schedSlug(p0.project_no || 'VREST', 40), shutdown: `${S.start}T${String(Math.floor(startH)).padStart(2, '0')}:00` },
     units: areas.map((a) => ({ code: a, name: a === 'PW' ? 'Project-wide (factored disciplines)' : a === 'PRJ' ? 'Project milestones' : (areaName.get(a) || a) })),
     resources: [...res.values()].map((o) => ({ id: o.id, name: o.name, type: o.type, rate: Math.round(o.rate * 100) / 100, code: o.code })),
     resCode: (o) => o.code,
-    cal: { name: `VREstimator ${dpw}-day week, ${hpd} h`, hpd, week, startH },
+    cal: { name: `${EST_BRAND} ${dpw}-day week, ${hpd} h`, hpd, week, startH },
     clock,
   };
   const entries = all.map((p) => ({
@@ -262,7 +262,7 @@ function schedXer(M) {
   const W = window.VissRadPlannerWriters;
   if (!W || !W.xer) throw new Error('XER writer not loaded');
   let x = W.xer(M.entries, M.ctx);
-  x = x.replace(/^ERMHDR\t([^\t]*)\t([^\t]*)\tProject\tVissRadPlanner\tVissRad\tVRPlanner/, 'ERMHDR\t$1\t$2\tProject\tVREstimator\tVissRad\tVREstimator');
+  x = x.replace(/^ERMHDR\t([^\t]*)\t([^\t]*)\tProject\tVissRadPlanner\tVissRad\tVRPlanner/, `ERMHDR\t$1\t$2\tProject\t${EST_BRAND}\tVissRad\t${EST_BRAND}`);
   const lines = x.split('\r\n');
   /* task_code -> task_id from the writer's TASK table */
   const ti = lines.indexOf('%T\tTASK');
@@ -303,7 +303,7 @@ function schedExport() {
   if (!M.acts) { toast('Nothing to schedule: the estimate has no man-hours yet', true); return; }
   let text;
   try { text = schedXer(M); } catch (e) { toast(`XER export failed: ${e.message}`, true); return; }
-  const name = `${schedSlug(D.project.project_no || 'VREstimator', 30)}-schedule.xer`;
+  const name = `${schedSlug(D.project.project_no || EST_BRAND, 30)}-schedule.xer`;
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' })); a.download = name;
   document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
@@ -316,7 +316,8 @@ const pkHeadsOf = (p) => { const w = p.rows.reduce((a, r) => a + r.mh, 0); retur
 /** VRProject: hand the schedule to the VRScheduler Schedule Editor on the
     same site (same handoff as VRPlanner / VRTAR / VRCMMS). */
 const SCH_TO_SCHEDULE_KEY = 'vissrad.plan.toschedule.v1';
-function schedEditorUrl() { const s = window.VR_STANDALONE; return s && s.schedule ? s.schedule : ''; }
+function schedEditorUrl() { const s = window.VR_STANDALONE; return s ? (s.schedule || '') : '../schedule/index.html'; }
+const SCHED_EDITOR_NAME = window.VR_STANDALONE ? 'the VRScheduler Schedule Editor' : 'the VissRadSCH Schedule Editor';
 function schedSend() {
   const M = schedBuild();
   if (!M.acts) { toast('Nothing to schedule: the estimate has no man-hours yet', true); return; }
@@ -347,10 +348,10 @@ function viewSchedule(root) {
     'Each area is a WBS node with a package per discipline; takeoff lines become activities and factored disciplines one activity each under Project-wide. Durations come from crew size, crews in parallel and shift hours, with labor and crew equipment loaded as resources. Export writes a Primavera P6 XER with the VRTAR writer.'));
 
   root.appendChild(toolbar(
-    schedEditorUrl() ? el('button', { class: 'primary', onclick: schedSend, disabled: !M.acts, title: 'Open this schedule in the VRScheduler Schedule Editor: add it under a WBS node of the open schedule, or open it as a new schedule' }, 'Send to Schedule Editor') : null,
+    schedEditorUrl() ? el('button', { class: 'primary', onclick: schedSend, disabled: !M.acts, title: `Open this schedule in ${SCHED_EDITOR_NAME}: add it under a WBS node of the open schedule, or open it as a new schedule` }, 'Send to Schedule Editor') : null,
     el('button', { class: schedEditorUrl() ? 'ghost' : 'primary', onclick: schedExport, disabled: !M.acts }, 'Export P6 XER'),
     el('button', { class: 'ghost', onclick: () => { S.crews = {}; audit('schedule', 'crews', 'auto', null, `target ${S.target_wd} wd`); refreshAll(); toast('Crews reset to automatic'); } }, 'Auto crews'),
-    el('span', { class: 'hint', text: schedEditorUrl() ? 'Send opens it in the Schedule Editor (VRProject). The XER imports in P6 with File \u203a Import \u203a Primavera PM (XER); then schedule (F9).' : 'Import in P6 with File \u203a Import \u203a Primavera PM (XER), then schedule (F9).' })));
+    el('span', { class: 'hint', text: schedEditorUrl() ? `Send opens it in ${SCHED_EDITOR_NAME}. The XER imports in P6 with File \u203a Import \u203a Primavera PM (XER); then schedule (F9).` : 'Import in P6 with File \u203a Import \u203a Primavera PM (XER), then schedule (F9).' })));
 
   const numIn = (k, min, max, step, w, label) => el('input', { type: 'number', min, max, step, value: S[k], class: 'cbs-in', style: `width:${w}px`, 'aria-label': label, onchange: (e) => set(k, num(e.target.value)) });
   root.appendChild(el('div', { class: 'sch-settings' },

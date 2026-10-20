@@ -73,9 +73,9 @@ const MODULES = [
     href: 'precon/index.html',
     desc: 'Making a sanctioned project buildable: constructability reviews, '
       + 'contracting strategy and bid packages, long-lead procurement, craft '
-      + 'labour and logistics, permits and a mobilisation readiness case.',
+      + 'labor and logistics, permits and a mobilisation readiness case.',
     feats: ['Readiness', 'Constructability', 'Bid packages', 'Long lead',
-      'Labour', 'Permits'],
+      'Labor', 'Permits'],
   },
   {
     id: 'deng',

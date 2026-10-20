@@ -1,3 +1,9 @@
+/* One code base, two homes: VREstimator (standalone builds set VR_STANDALONE)
+   and VissRadEST inside the VissRad Suite (web/estimating, shared files one
+   level up). EST_BRAND names the tool in titles, files and messages;
+   EST_ROOT is where vendor/ and shared/ sit. */
+window.EST_BRAND = window.VR_STANDALONE ? 'VREstimator' : 'VissRadEST';
+window.EST_ROOT = window.VR_STANDALONE ? '' : '../';
 /* ==========================================================================
    VissRadEST — drawing takeoff from PDF.
    Open a PDF drawing (or, in demo mode, a sample drawing from DEng), set the
@@ -15,12 +21,12 @@
 let EST_PDFJS = null;
 async function estPdfjs() {
   if (EST_PDFJS) return EST_PDFJS;
-  const base = new URL('vendor/pdfjs/', document.baseURI).href;
+  const base = new URL(`${EST_ROOT}vendor/pdfjs/`, document.baseURI).href;
   let lib;
   try { lib = await import(`${base}pdf.min.mjs`); } catch (e) {
     /* Opened straight from a folder: the browser blocks the PDF reader. The
        installed VRProject / VREstimator icons start the window so it works. */
-    if (location.protocol === 'file:') throw new Error('PDF reading needs the installed app: open VREstimator from its VRProject icon (or the hosted site). Opened straight from a folder, the browser blocks it.');
+    if (location.protocol === 'file:') throw new Error(`PDF reading needs the installed app: open ${EST_BRAND} from its desktop icon (or the hosted site). Opened straight from a folder, the browser blocks it.`);
     throw e;
   }
   lib.GlobalWorkerOptions.workerSrc = `${base}pdf.worker.min.mjs`;
@@ -399,7 +405,7 @@ function openPdfTakeoff(onPosted) {
     const ptLen = tkLength(S.cal);
     const box = el('div', { class: 'form-grid' },
       el('label', { text: 'Real length of the two points' }), el('input', { type: 'number', id: 'tk-real', value: '', step: 'any', min: 0 }),
-      el('label', { text: 'Unit' }), el('select', { id: 'tk-unit' }, el('option', { value: 'ft' }, 'feet'), el('option', { value: 'm' }, 'metres'), el('option', { value: 'in' }, 'inches')));
+      el('label', { text: 'Unit' }), el('select', { id: 'tk-unit' }, el('option', { value: 'ft' }, 'feet'), el('option', { value: 'm' }, 'meters'), el('option', { value: 'in' }, 'inches')));
     const inline = el('div', { class: 'tk-scale' }, box,
       el('button', { class: 'primary', onclick: () => {
         const v = Number(box.querySelector('#tk-real').value);

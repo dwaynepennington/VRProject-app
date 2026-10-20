@@ -12,7 +12,7 @@
 
    The man-hour library values are demo values generated for this build, not
    copied from a proprietary man-hour manual — the source workbook's own
-   donor tables (Fluor SUWH, Page manual) are copyrighted and were flagged
+   published donor man-hour tables are copyrighted and were flagged
    incomplete in its own QA sheet. Every screen that surfaces a library value
    carries a "demo values" flag so nobody mistakes it for sourced data.
    ========================================================================== */
@@ -22,7 +22,7 @@
    (board.js) + InEight-style cost breakdown, resources and what-if (cbs.js) +
    VissRadEST workbook import/export (xio.js). */
 const MODULE_ID = 'estimating';
-const LS_KEY = 'vrestimator.estimate.v1';
+const LS_KEY = window.VR_STANDALONE ? 'vrestimator.estimate.v1' : 'vissrad.estimating.v1';
 const STORE = makeStore(LS_KEY);
 const USER = SUITE_USER;
 const TODAY = '2026-08-26';
@@ -72,7 +72,7 @@ function demoFlag(text) {
    before estimates could be added still load; every other estimate is held
    under its own key with its own header. Issued estimates are listed as
    historical. */
-const EST_REG_KEY = 'vrestimator.register';
+const EST_REG_KEY = window.VR_STANDALONE ? 'vrestimator.register' : 'vissrad.estimating.register';
 function estRegister() {
   let r = null;
   try { r = JSON.parse(STORE.get(EST_REG_KEY) || 'null'); } catch (e) { r = null; }
@@ -503,8 +503,8 @@ suiteBoot('data.json', (data) => {
 
   suiteChrome({
     moduleId: MODULE_ID,
-    title: 'VREstimator',
-    file: { store: STORE, keys: [EST_REG_KEY, LS_KEY, ...estRegister().list.filter((x) => x.id !== 'base').map((x) => `${LS_KEY}@${x.id}`)], name: 'VREstimator', label: `VREstimator-${D.project.project_no || 'estimate'}` },
+    title: window.VR_STANDALONE ? 'VREstimator' : 'Estimating',
+    file: { store: STORE, keys: [EST_REG_KEY, LS_KEY, ...estRegister().list.filter((x) => x.id !== 'base').map((x) => `${LS_KEY}@${x.id}`)], name: EST_BRAND, label: `${EST_BRAND}-${D.project.project_no || 'estimate'}` },
     subtitle: [D.project.project_name, D.project.project_no, D.project.client, `${D.project.estimate_class} estimate`].filter(Boolean).join(' \u00b7 '),
     onReset: () => suiteResetDialog(estResetStore(), LS_KEY),
   });
@@ -1190,7 +1190,7 @@ function viewLibrary(root) {
   root.appendChild(el('div', { class: 'split split-3-2', style: 'margin-top:10px' },
     card('Weld factors', weldTbl.wrap, { flush: true }).card,
     card('Craft rates', [craftTbl.wrap, el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid var(--border)' },
-      el('button', { class: 'ghost', title: 'Add or update these crafts as labour resources in the shared VissRad resource library (codes EST-<craft>)', onclick: () => estResources(sendCraftsToLibrary) }, 'Send craft rates to the resource library'),
+      el('button', { class: 'ghost', title: 'Add or update these crafts as labor resources in the shared VissRad resource library (codes EST-<craft>)', onclick: () => estResources(sendCraftsToLibrary) }, 'Send craft rates to the resource library'),
       el('button', { class: 'ghost', title: 'The resource library shared by Schedule, Cost and Estimating', onclick: () => estResources(() => window.VissRadResources.manage({})) }, 'Open resource library\u2026'))], { flush: true }).card));
 
   root.appendChild(el('div', { style: 'margin-top:10px' },
@@ -1200,13 +1200,13 @@ function viewLibrary(root) {
 /* The shared VissRad resource library (shared/resources.js), loaded when first used. */
 function estResources(fn) {
   if (window.VissRadResources) { fn(); return; }
-  const sc = document.createElement('script'); sc.src = 'shared/resources.js';
+  const sc = document.createElement('script'); sc.src = `${EST_ROOT}shared/resources.js`;
   sc.onload = fn; sc.onerror = () => toast('The resource library could not be loaded.', true);
   document.head.appendChild(sc);
 }
 function sendCraftsToLibrary() {
   const slug = (s) => 'EST-' + String(s || '').toUpperCase().replace(/[^A-Z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 30);
-  const items = (D.crafts || []).filter((c) => c.craft).map((c) => ({ code: slug(c.craft), name: c.craft, type: 'Labour', uom: 'hr', disc: 'Estimating craft',
+  const items = (D.crafts || []).filter((c) => c.craft).map((c) => ({ code: slug(c.craft), name: c.craft, type: 'Labor', uom: 'hr', disc: 'Estimating craft',
     rates: [{ from: '', base: +c.base_rate || 0, burden: Math.round((+c.burden_pct || 0) * 100000) / 1000 }], notes: 'From the Estimating craft rates' }));
   if (!items.length) { toast('There are no craft rates to send.', true); return; }
   const r = window.VissRadResources.upsert(items, 'update');

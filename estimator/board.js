@@ -311,7 +311,7 @@ function viewBoard(root) {
     props.append(
       el('div', { class: 'bd-props-head' }, el('b', { text: it.id }), el('span', { class: 'hint', text: `${KIND_LABEL[it.kind]} \u00b7 ${it.marks.length} mark${it.marks.length === 1 ? '' : 's'}` })),
       el('div', { class: 'form-grid bd-form' },
-        el('label', { text: 'Name' }), name, el('label', { text: 'Colour' }), colour, el('label', { text: 'Area' }), area,
+        el('label', { text: 'Name' }), name, el('label', { text: 'Color' }), colour, el('label', { text: 'Area' }), area,
         el('label', { text: 'Priced with' }), priced,
         el('label', { text: 'Depth D (ft)' }), depth, el('label', { text: 'Height H (ft)' }), height),
       el('div', { class: 'bd-meas' },
@@ -552,7 +552,7 @@ function viewBoard(root) {
   function askScale() {
     const ptLen = bdLen(BV.cal);
     const real = el('input', { type: 'number', step: 'any', min: 0, id: 'bd-real', placeholder: 'e.g. 20' });
-    const unit = el('select', { id: 'bd-unit' }, el('option', { value: 'ft' }, 'feet'), el('option', { value: 'in' }, 'inches'), el('option', { value: 'm' }, 'metres'));
+    const unit = el('select', { id: 'bd-unit' }, el('option', { value: 'ft' }, 'feet'), el('option', { value: 'in' }, 'inches'), el('option', { value: 'm' }, 'meters'));
     const err = el('div', { class: 'field-err' });
     modal({ title: 'Set the drawing scale', sub: `Measured ${ptLen.toFixed(1)} pt on ${bdSheet(BV.sheet).name} p${BV.page}`, width: 460,
       body: el('div', {}, el('div', { class: 'form-grid' }, el('label', { text: 'Real length' }), real, el('label', { text: 'Unit' }), unit), err),
@@ -662,11 +662,11 @@ function viewAssemblies(root) {
 
 /* First visit: start blank (user mode) or explore the synthetic demo. */
 function vrestWelcome() {
-  const K = 'vrestimator.welcome.v1';
+  const K = window.VR_STANDALONE ? 'vrestimator.welcome.v1' : 'vissrad.estimating.welcome.v1';
   if (STORE.get(K)) return;
   STORE.set(K, '1');
   const choice = (title, text, fn) => el('button', { class: 'welcome-opt', onclick: fn }, el('b', { text: title }), el('span', { text: text }));
-  modal({ title: 'Welcome to VREstimator', sub: 'Drawing takeoff, assemblies and AACE Class 1\u20135 estimating in one tool', width: 560,
+  modal({ title: `Welcome to ${EST_BRAND}`, sub: 'Drawing takeoff, assemblies and AACE Class 1\u20135 estimating in one tool', width: 560,
     body: el('div', { class: 'welcome' },
       choice('Start a blank estimate', 'Your own estimate with the man-hour library, crafts, material prices and assemblies; no quantities or drawings.', () => { closeModal(); estNewDialog(); }),
       choice('Explore the demo estimate', 'VR-DEMO-001, a synthetic Gulf Coast project with a measured flare-area layout, Bid Desk set and takeoff lines.', () => { closeModal(); TABS.go('board'); })),

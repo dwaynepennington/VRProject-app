@@ -439,7 +439,7 @@ function scanFinishRow(r) {
   const why = [];
   if (r.qty == null) why.push('quantity not read');
   if (r.size == null && r.cls !== 'bolt') why.push('size not read');
-  if (r.cls === 'other') why.push('component type not recognised');
+  if (r.cls === 'other') why.push('component type not recognized');
   if (isLen && q && q.assumed) why.push('length unit assumed feet');
   if (isLen && r.unit === 'EA') why.push('pipe quantity is not a length');
   if (r.src === 'ocr' && r.conf < 75) why.push(`OCR confidence ${Math.round(r.conf)}`);
@@ -807,9 +807,9 @@ async function scanOcrWorker(onProgress) {
   if (SCAN_OCR.worker) return SCAN_OCR.worker;
   if (!SCAN_OCR.loading) {
     SCAN_OCR.loading = (async () => {
-      const base = new URL('vendor/tesseract/', document.baseURI).href;
+      const base = new URL(`${EST_ROOT}vendor/tesseract/`, document.baseURI).href;
       if (typeof Tesseract === 'undefined') await scanLoadScript(`${base}tesseract.min.js`);
-      if (location.protocol === 'file:') { try { await fetch(`${base}README.txt`); } catch (e) { throw new Error('Text recognition needs the installed app: open VREstimator from its VRProject icon (or the hosted site). Opened straight from a folder, the browser blocks it.'); } }
+      if (location.protocol === 'file:') { try { await fetch(`${base}README.txt`); } catch (e) { throw new Error(`Text recognition needs the installed app: open ${EST_BRAND} from its desktop icon (or the hosted site). Opened straight from a folder, the browser blocks it.`); } }
       const w = await Tesseract.createWorker('eng', 1, {
         workerPath: `${base}worker.min.js`, corePath: `${base}tesseract-core-simd-lstm.wasm.min.js`, langPath: base, gzip: true, cachePath: 'vissrad-ocr-fast-1',
         logger: (m) => { if (SCAN_OCR.onProgress) SCAN_OCR.onProgress(m); },

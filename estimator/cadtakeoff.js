@@ -354,7 +354,7 @@ function cadExport(dr) {
   const lay = Object.entries(s.layers).filter(([, l]) => l.ents).map(([k, l]) => { const it = cadItemFor(dr, 'layer', k); return [k, l.ents, round2(l.len * f), l.closed, round2(l.area * f * f), round2(l.perim * f), it ? it.id : '', it ? it.assembly || it.master_key : '', it ? KIND_LABEL[it.kind] : '', it ? it.area : '']; });
   const blk = Object.entries(s.blocks).map(([k, b]) => { const it = cadItemFor(dr, 'block', k); return [k, b.direct, b.nested, Object.entries(b.layers).map(([a, n]) => `${a} (${n})`).join(', '), it ? it.id : '', it ? it.assembly || it.master_key : '', it ? (it.cad.nested ? 'Yes' : 'No') : '', it ? it.area : '']; });
   const lines = D.takeoff_lines.filter((l) => D.cad.items.some((it) => it.cad.drawing === dr.id && it.id === l.board_item)).map((l) => { const c = computeLine(l); return [l.board_item, l.line_no, l.area, l.discipline, l.master_key, l.description, round2(l.quantity), l.unit, l.crew || '', round2(c.totalMh), round2(c.totalCost)]; });
-  vrestDownloadXlsx(`VREstimator-CAD-takeoff-${cadDocNo(dr.name)}.xlsx`, [
+  vrestDownloadXlsx(`${EST_BRAND}-CAD-takeoff-${cadDocNo(dr.name)}.xlsx`, [
     { name: 'Drawing', header: ['Field', 'Value'], rows: [['File', dr.name], ['Revision', dr.rev], ['Units', `1 drawing unit = ${dr.unit_ft} ft`], ['Entities', s.entities], ['Project', `${D.project.project_no} ${D.project.project_name}`]] },
     { name: 'Layers', header: ['Layer', 'Entities', 'Length LF', 'Closed shapes', 'Area SF', 'Perimeter LF', 'Item', 'Priced as', 'Measure', 'Area'], rows: lay },
     { name: 'Blocks', header: ['Block', 'Placed', 'Nested', 'On layers', 'Item', 'Priced as', 'Include nested', 'Area'], rows: blk },

@@ -561,7 +561,7 @@
   function saveBlob(name, blob) { const a = el('a', { href: URL.createObjectURL(blob), download: name }); document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500); }
   function sheetIO() {
     if (window.VRSheetIO) return Promise.resolve(window.VRSheetIO);
-    return new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'shared/sheetio.js'; s.onload = () => res(window.VRSheetIO); s.onerror = () => rej(new Error('Could not load the workbook writer.')); document.head.appendChild(s); });
+    return new Promise((res, rej) => { const s = document.createElement('script'); s.src = `${EST_ROOT}shared/sheetio.js`; s.onload = () => res(window.VRSheetIO); s.onerror = () => rej(new Error('Could not load the workbook writer.')); document.head.appendChild(s); });
   }
   async function scopeRows(div) {
     const X = await xref();
