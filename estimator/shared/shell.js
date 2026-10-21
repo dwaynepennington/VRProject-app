@@ -24,7 +24,7 @@ const SUITE_USER = (window.VRUSER && window.VRUSER.who && window.VRUSER.who()) |
 const MODULES = [
   {
     id: 'portfolio',
-    name: 'VissRadPortfolio',
+    name: 'VRPortfolio',
     tag: 'Portfolio health',
     href: 'portfolio/index.html',
     desc: 'The overview above every module: stage-gate pipeline health, cost '
@@ -35,7 +35,7 @@ const MODULES = [
   },
   {
     id: 'feed',
-    name: 'VissRadFEED',
+    name: 'VRFEED',
     tag: 'FEED tracking',
     href: 'feed/index.html',
     desc: 'Front-end engineering design through the sanction gates: gate '
@@ -46,7 +46,7 @@ const MODULES = [
   },
   {
     id: 'estimating',
-    name: 'VissRadEST',
+    name: 'VREST',
     tag: 'Estimating',
     href: 'estimating/index.html',
     desc: 'AACE class-based EPC estimating: pick parametric, known-quantity or '
@@ -57,7 +57,7 @@ const MODULES = [
   },
   {
     id: 'schedule',
-    name: 'VissRadSCH',
+    name: 'VRSCH',
     tag: 'Scheduling & analysis',
     href: 'schedule/index.html',
     desc: 'Native CPM schedule editor (activities, logic, calendars, WBS, '
@@ -68,7 +68,7 @@ const MODULES = [
   },
   {
     id: 'precon',
-    name: 'VissRadPreCon',
+    name: 'VRPreCon',
     tag: 'Preconstruction',
     href: 'precon/index.html',
     desc: 'Making a sanctioned project buildable: constructability reviews, '
@@ -79,7 +79,7 @@ const MODULES = [
   },
   {
     id: 'deng',
-    name: 'VissRadDEng',
+    name: 'VRDEng',
     tag: 'Detailed engineering',
     href: 'deng/index.html',
     desc: 'Detailed engineering to IFC: the deliverable register by revision '
@@ -91,7 +91,7 @@ const MODULES = [
   },
   {
     id: 'procure',
-    name: 'VissRadProCure',
+    name: 'VRProCure',
     tag: 'Procurement and material management',
     href: 'procure/index.html',
     desc: 'The supply chain from take-off to the crew: requisitions from the '
@@ -104,7 +104,7 @@ const MODULES = [
   },
   {
     id: 'rfi',
-    name: 'VissRadRFI',
+    name: 'VRRFI',
     tag: 'Requests for information, FEED to handover',
     href: 'rfi/index.html',
     desc: 'Requests for information at every stage from FEED through SU&C and '
@@ -115,7 +115,7 @@ const MODULES = [
   },
   {
     id: 'change',
-    name: 'VissRadChange',
+    name: 'VRChange',
     tag: 'Change management, trends to change orders and MOC',
     href: 'change/index.html',
     desc: 'One register for every change: trends, potential change notices, '
@@ -128,7 +128,7 @@ const MODULES = [
   },
   {
     id: 'controls',
-    name: 'VissRadPCS',
+    name: 'VRPCS',
     tag: 'Project controls',
     href: 'controls/index.html',
     desc: 'Cost control and earned value against a live budget: commitments, '
@@ -139,7 +139,7 @@ const MODULES = [
   },
   {
     id: 'cost',
-    name: 'VissRadCost',
+    name: 'VRCost',
     tag: 'Cost management',
     href: 'cost/index.html',
     desc: 'Control-account cost management over a full CBS: budget baselining '
@@ -150,7 +150,7 @@ const MODULES = [
   },
   {
     id: 'erp',
-    name: 'VissRadERP',
+    name: 'VRERP',
     tag: 'Finance',
     href: 'erp/index.html',
     desc: 'General ledger with document-level posting, AR and AP subledgers, '
@@ -160,7 +160,7 @@ const MODULES = [
   },
   {
     id: 'arap',
-    name: 'VissRadARAP',
+    name: 'VRARAP',
     tag: 'Payables & receivables',
     href: 'arap/index.html',
     desc: 'Invoice lifecycle from intake to payment: coding, three-way match, '
@@ -170,7 +170,7 @@ const MODULES = [
   },
   {
     id: 'awp',
-    name: 'VissRadAWP',
+    name: 'VRAWP',
     tag: 'Advanced work packaging',
     href: 'awp/index.html',
     desc: 'Workface planning from Path of Construction to turnover: area '
@@ -183,7 +183,7 @@ const MODULES = [
   },
   {
     id: 'plan',
-    name: 'VissRad Planner',
+    name: 'VRPlanner',
     tag: 'Capital work planning',
     href: 'plan/index.html',
     desc: 'Steps out capital construction work before it is loaded into the '
@@ -195,7 +195,7 @@ const MODULES = [
   },
   {
     id: 'planner',
-    name: 'VissRadConstruction',
+    name: 'VRConstruction',
     tag: 'Construction planning & execution',
     href: 'planner/index.html',
     desc: 'Builds the workstep and crew detail P6 is too coarse to hold, '
@@ -203,13 +203,13 @@ const MODULES = [
       + 'is sent, writes it as XER, P6 XML or an import spreadsheet, and takes '
       + 'field quantities back as progress. In the field it keeps daily '
       + 'reports, crew timesheets and permits to work with the JSA; the '
-      + 'safety and environmental records are kept in VissRadSHE.',
+      + 'safety and environmental records are kept in VRSHE.',
     feats: ['Workstep grid', 'Crew & resource loading', 'Validation gate',
       'P6 writers', 'Field statusing', 'Daily reports', 'Permits to work'],
   },
   {
     id: 'she',
-    name: 'VissRadSHE',
+    name: 'VRSHE',
     tag: 'Safety, health & environment',
     href: 'she/index.html',
     desc: 'The site safety and environmental record: incidents with OSHA '
@@ -222,7 +222,7 @@ const MODULES = [
   },
   {
     id: 'vrview',
-    name: 'VissRad4D',
+    name: 'VR4D',
     tag: 'Visual sequencing',
     href: 'vrview/index.html',
     desc: 'Schedule sequencing painted onto the asset: elevations and model '
@@ -233,7 +233,7 @@ const MODULES = [
   },
   {
     id: 'commissioning',
-    name: 'VissRadSU&C',
+    name: 'VRSU&C',
     tag: 'Startup & commissioning',
     href: 'commissioning/index.html',
     desc: 'Completions management from receipt verification through handover: '
@@ -244,7 +244,7 @@ const MODULES = [
   },
   {
     id: 'cmms',
-    name: 'VissRadCMMS',
+    name: 'VRCMMS',
     tag: 'Maintenance',
     href: 'cmms/index.html',
     desc: 'Maintenance management that starts at turnover: the asset register is '
@@ -255,7 +255,7 @@ const MODULES = [
   },
   {
     id: 'tar',
-    name: 'VissRadTAR',
+    name: 'VRTAR',
     tag: 'Turnaround estimating',
     href: 'tar/index.html',
     desc: 'Module-driven turnaround estimating: answer a short wizard per '
@@ -267,7 +267,7 @@ const MODULES = [
   },
   {
     id: 'link',
-    name: 'VissRad Link',
+    name: 'VRLink',
     tag: 'Document exchange',
     href: 'link/index.html',
     desc: 'The sync layer the modules speak: typed document envelopes moving '
@@ -278,7 +278,7 @@ const MODULES = [
   },
   {
     id: 'analytics',
-    name: 'VissRadBI',
+    name: 'VRBI',
     tag: 'Analytics & exports',
     href: 'analytics/index.html',
     desc: 'The Power BI and P6 analytics layer: the star schema every module '
@@ -289,7 +289,7 @@ const MODULES = [
   },
   {
     id: 'ai',
-    name: 'VissRadAI',
+    name: 'VRAI',
     tag: 'Project assistant',
     href: 'ai/index.html',
     desc: 'Questions about the project answered from the suite\'s own records: '
@@ -343,16 +343,16 @@ function suiteRail(activeId, depth = 1) {
   const rail = el('nav', { class: 'modrail' },
     el('a', { class: 'rail-label', href: home, style: 'text-decoration:none' },
       'VissRad Suite'),
-    /* VissRad Markup is part of every module rather than a module of its own, so it is not in MODULES
-       (which drives licences and counts). It sits beside VissRadDEng, the document repository whose
+    /* VRMarkup is part of every module rather than a module of its own, so it is not in MODULES
+       (which drives licences and counts). It sits beside VRDEng, the document repository whose
        drawings it opens; without DEng it leads the list. */
     (() => {
       const markup = el('a', {
         class: `modrail-item tool${activeId === 'markup' ? ' active' : ''}`,
         href: `${up}markup/index.html`,
-        title: 'VissRad Markup — open a PDF to read, mark up, measure and compare revisions',
+        title: 'VRMarkup — open a PDF to read, mark up, measure and compare revisions',
         'data-tool': 'markup',
-      }, el('span', { class: 'dot' }), 'VissRad Markup');
+      }, el('span', { class: 'dot' }), 'VRMarkup');
       const items = MODULES.map((m) => el('a', {
         class: `modrail-item${m.id === activeId ? ' active' : ''}`,
         href: depth === 0 ? m.href : `${up}${m.href}`,
@@ -584,11 +584,11 @@ function suiteHref(app, tab, params) {
   const qs = q.toString();
   return `../${app}/index.html${qs ? `?${qs}` : ''}${tab ? `#${tab}` : ''}`;
 }
-/* A "Raise RFI" button for field modules: opens VissRadRFI with a new RFI
+/* A "Raise RFI" button for field modules: opens VRRFI with a new RFI
    prefilled from the record (project, subject, location, where it came from). */
 function suiteRaiseRfiButton(pre, label) {
   return el('button', {
-    class: 'ghost', title: 'Open VissRadRFI with a new RFI raised from this record',
+    class: 'ghost', title: 'Open VRRFI with a new RFI raised from this record',
     onclick: () => { location.href = suiteHref('rfi', 'rfis', { new_rfi: 1, ...pre }); },
   }, label || 'Raise RFI');
 }

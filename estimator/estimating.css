@@ -1,4 +1,4 @@
-/* VissRadEST — Estimating. Module-local styles only; everything shared
+/* VREST — Estimating. Module-local styles only; everything shared
    lives in ../shared/shell.css. */
 
 .wf { display: flex; flex-direction: column; gap: 2px; }

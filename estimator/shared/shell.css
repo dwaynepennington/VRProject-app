@@ -1,4 +1,4 @@
-/* VissRadPCS — Startup & Commissioning browser demo
+/* VRPCS — Startup & Commissioning browser demo
    Palette and typography mirror the PySide6 desktop module. */
 
 :root {
@@ -553,7 +553,7 @@ a.modcard.soon:hover { border-color: var(--border-hi); transform: none; }
 .tk-scale { display: flex; gap: 10px; align-items: end; padding: 8px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; }
 .seg { display: inline-flex; gap: 2px; }
 .seg button.on { background: var(--accent, #4f98a3); color: #fff; border-color: transparent; }
-/* VissRad4D IFC model */
+/* VR4D IFC model */
 .ifc-layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; gap: 14px; align-items: start; margin-bottom: 14px; }
 .ifc-side { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .ifc-side .card-body { max-height: 38vh; overflow: auto; }
@@ -572,7 +572,7 @@ a.modcard.soon:hover { border-color: var(--border-hi); transform: none; }
 .bcf-snap { width: 100%; max-height: 240px; object-fit: contain; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px; background: var(--bg); }
 .bcf-comment { border-left: 2px solid var(--border); padding: 3px 8px; margin: 4px 0; font-size: 12.5px; }
 @media (max-width: 1100px) { .ifc-layout { grid-template-columns: 1fr; } }
-/* VissRad4D federation and clash detection */
+/* VR4D federation and clash detection */
 .ifc-models { width: 100%; border-collapse: collapse; font-size: 13px; }
 .ifc-models th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--text-faint); padding: 4px 8px; border-bottom: 1px solid var(--border); }
 .ifc-models td { padding: 5px 8px; border-bottom: 1px solid var(--border); vertical-align: middle; }
@@ -585,11 +585,11 @@ a.modcard.soon:hover { border-color: var(--border-hi); transform: none; }
 .clash-cb { display: block; font-size: 12.5px; padding: 2px 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 760px) { .clash-sets { grid-template-columns: 1fr; } }
 
-/* In-table record links (VissRadCMMS, VissRadSHE, VissRadConstruction safety summary). */
+/* In-table record links (VRCMMS, VRSHE, VRConstruction safety summary). */
 a.lnk { color: var(--blue); text-decoration: none; cursor: pointer; }
 a.lnk:hover { text-decoration: underline; }
 
-/* VissRadEST — Scan drawings (PDF) */
+/* VREST — Scan drawings (PDF) */
 .scan-wrap .toolbar { gap: 8px; flex-wrap: wrap; }
 .scan-status { max-width: 520px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .scan-chk { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-dim); }

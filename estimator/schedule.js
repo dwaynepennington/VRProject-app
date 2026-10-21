@@ -262,7 +262,7 @@ function schedXer(M) {
   const W = window.VissRadPlannerWriters;
   if (!W || !W.xer) throw new Error('XER writer not loaded');
   let x = W.xer(M.entries, M.ctx);
-  x = x.replace(/^ERMHDR\t([^\t]*)\t([^\t]*)\tProject\tVissRadPlanner\tVissRad\tVRPlanner/, `ERMHDR\t$1\t$2\tProject\t${EST_BRAND}\tVissRad\t${EST_BRAND}`);
+  x = x.replace(/^ERMHDR\t([^\t]*)\t([^\t]*)\tProject\tVRPlanner\tVissRad\tVRPlanner/, `ERMHDR\t$1\t$2\tProject\t${EST_BRAND}\tVissRad\t${EST_BRAND}`);
   const lines = x.split('\r\n');
   /* task_code -> task_id from the writer's TASK table */
   const ti = lines.indexOf('%T\tTASK');
@@ -317,7 +317,7 @@ const pkHeadsOf = (p) => { const w = p.rows.reduce((a, r) => a + r.mh, 0); retur
     same site (same handoff as VRPlanner / VRTAR / VRCMMS). */
 const SCH_TO_SCHEDULE_KEY = 'vissrad.plan.toschedule.v1';
 function schedEditorUrl() { const s = window.VR_STANDALONE; return s ? (s.schedule || '') : '../schedule/index.html'; }
-const SCHED_EDITOR_NAME = window.VR_STANDALONE ? 'the VRScheduler Schedule Editor' : 'the VissRadSCH Schedule Editor';
+const SCHED_EDITOR_NAME = window.VR_STANDALONE ? 'the VRScheduler Schedule Editor' : 'the VRSCH Schedule Editor';
 function schedSend() {
   const M = schedBuild();
   if (!M.acts) { toast('Nothing to schedule: the estimate has no man-hours yet', true); return; }

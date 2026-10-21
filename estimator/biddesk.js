@@ -1,5 +1,5 @@
 /* ==========================================================================
-   VissRadEST — Bid Desk (window.BidDesk). Loaded when the tab first opens.
+   VREST — Bid Desk (window.BidDesk). Loaded when the tab first opens.
 
    Rule-based bid preparation, all in the browser:
      Bid set      drawing sets and spec books (PDF) read with pdf.js; sheet
@@ -18,7 +18,7 @@
                   no specification (and the reverse), duplicate sheet numbers,
                   and scope notes (exclusions, allowances, alternates, permit
                   triggers, commercial terms). A finding raises a prefilled
-                  RFI in VissRadRFI.
+                  RFI in VRRFI.
    Files are kept in this browser (IndexedDB) so the set reopens; nothing is
    uploaded. No AI is used: every result comes from rules that can be read
    in this file.
@@ -262,7 +262,7 @@
     return out.sort((a, b) => sevRank[a.sev] - sevRank[b.sev] || a.type.localeCompare(b.type));
   }
   function raiseRfi(f) {
-    const q = { new_rfi: 1, subject: f.subject, question: f.question, source: 'VissRadEST Bid Desk', location: f.where && f.where !== '—' ? f.where : '' };
+    const q = { new_rfi: 1, subject: f.subject, question: f.question, source: 'VREST Bid Desk', location: f.where && f.where !== '—' ? f.where : '' };
     location.href = suiteHref('rfi', 'rfis', q);
   }
 
@@ -595,7 +595,7 @@
       sheets.push({ name: `${div} ${S.trade ? S.trade.name : ''}`.slice(0, 31), header: ['Spec section', 'Title', 'Status', 'Spec pages', 'Cited on sheets', 'Trade sheets in set', 'Scope notes', 'Included in bid (Y/N)', 'Bidder comments'], rows });
     }
     sheets.unshift({ name: 'About', header: ['Item', 'Value'], rows: [['Estimate', `${D.project.project_no} ${D.project.project_name}`], ['Prepared', new Date().toISOString().slice(0, 10)],
-      ['Documents', BD.docs.map((d) => `${d.name} (${d.pages} p)`).join('; ')], ['Basis', 'Rule-based index of the bid documents in VissRadEST Bid Desk. Bidders confirm scope against the documents.']] });
+      ['Documents', BD.docs.map((d) => `${d.name} (${d.pages} p)`).join('; ')], ['Basis', 'Rule-based index of the bid documents in VREST Bid Desk. Bidders confirm scope against the documents.']] });
     const blob = await io.xlsxBlob(sheets);
     saveBlob(`${D.project.project_no}-scope-sheets${divs.length === 1 ? `-div${divs[0]}` : ''}.xlsx`, blob);
   }
@@ -787,7 +787,7 @@
   function vChecks(host) {
     if (!BD.docs.length) { host.append(el('div', { class: 'hint', text: 'Add the bid documents on Bid set first.' })); return; }
     const out = el('div', {}, el('div', { class: 'hint', text: 'Checking…' }));
-    host.append(card('Checks', [el('div', { class: 'hint mb10', text: 'Rule-based checks of the bid set. Each finding can raise a prefilled RFI in VissRadRFI or be dismissed when it does not apply.' }), out]).card);
+    host.append(card('Checks', [el('div', { class: 'hint mb10', text: 'Rule-based checks of the bid set. Each finding can raise a prefilled RFI in VRRFI or be dismissed when it does not apply.' }), out]).card);
     findings().then((F) => {
       out.textContent = '';
       out.append(el('div', { class: 'grid g3 mb10' },

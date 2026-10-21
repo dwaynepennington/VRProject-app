@@ -1,8 +1,8 @@
 /* ==========================================================================
-   VREstimator — Import / Export in the VissRadEST workbook formats.
+   VREstimator — Import / Export in the VREST workbook formats.
 
    Reads, with a preview of what is added, changed and left alone:
-     * VissRadEST import workbook  — one sheet per table, headings are the
+     * VREST import workbook  — one sheet per table, headings are the
        field keys (takeoff_lines, mh_library, material_prices, crafts,
        weld_factors, areas, benchmark).
      * Estimate takeoff workbook  — the estimator's sheets: Takeoff, MH
@@ -10,11 +10,11 @@
      * Any CSV / sheet with a recognisable takeoff header (a digital takeoff
        export: Description, Quantity, Unit, plus Library key or Line ID).
    Writes the same two workbooks, so a file round-trips between VREstimator,
-   VissRadEST and the suite's Link source / Pull.
+   VREST and the suite's Link source / Pull.
    ========================================================================== */
 'use strict';
 
-/* table: { key field, fields (VissRadEST keys), human sheet name + headings } */
+/* table: { key field, fields (VREST keys), human sheet name + headings } */
 const XIO_TABLES = {
   takeoff_lines: { key: 'line_id', label: 'Takeoff lines', human: 'Takeoff',
     fields: ['id', 'discipline', 'area', 'line_id', 'description', 'master_key', 'unit', 'quantity', 'unit_mh_override', 'discipline_factor', 'global_factor', 'item_factor', 'craft', 'crew', 'weld_key', 'equip_unit_cost', 'sub_unit_cost'],
@@ -37,7 +37,7 @@ const XIO_NUM = new Set(['quantity', 'unit_mh_override', 'discipline_factor', 'g
 const XIO_GENERIC = { description: ['description', 'item', 'name', 'takeoff item', 'condition'], quantity: ['quantity', 'qty', 'quantity 1', 'total qty'], unit: ['unit', 'uom', 'units', 'unit of measure'],
   master_key: ['library key', 'master_key', 'key', 'cost code', 'assembly code', 'item code'], line_id: ['line id', 'line_id', 'id', 'item #', 'item no'], discipline: ['discipline', 'trade'], area: ['area', 'location', 'zone'] };
 
-/* Current records of a table, normalised to the VissRadEST field keys. */
+/* Current records of a table, normalised to the VREST field keys. */
 function xioCurrent(t) {
   if (t === 'takeoff_lines') return D.takeoff_lines.map((l) => ({ id: l.id, discipline: l.discipline, area: l.area, line_id: l.line_id || l.line_no, description: l.description, master_key: l.master_key, unit: l.unit || l.uom, quantity: l.quantity,
     unit_mh_override: l.unit_mh_override ?? '', discipline_factor: l.discipline_factor, global_factor: l.global_factor, item_factor: l.item_factor, craft: l.craft, crew: l.crew || '', weld_key: l.weld_key || '', equip_unit_cost: l.equip_unit_cost || '', sub_unit_cost: l.sub_unit_cost || '' }));
@@ -149,13 +149,13 @@ function viewData(root) {
   const fileIn = el('input', { type: 'file', accept: '.xlsx,.xlsm,.csv,.tsv,.txt', style: 'display:none', onchange: (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) readFile(f); } });
   root.appendChild(el('div', { class: 'split split-1-1' },
     card('Import', [
-      el('p', { class: 'hint', text: 'Bring in a VissRadEST import workbook (sheet per table), the Estimate takeoff workbook, or a takeoff export from another tool (CSV or XLSX with Description, Quantity and Unit). You see what is added and changed before anything is written.' }),
+      el('p', { class: 'hint', text: 'Bring in a VREST import workbook (sheet per table), the Estimate takeoff workbook, or a takeoff export from another tool (CSV or XLSX with Description, Quantity and Unit). You see what is added and changed before anything is written.' }),
       toolbar(el('button', { class: 'primary', onclick: () => fileIn.click() }, 'Choose workbook or CSV\u2026'), fileIn),
       prev]).card,
     card('Export', [
-      el('p', { class: 'hint', text: 'Both workbooks open in Excel and load back into VREstimator or VissRadEST (Data \u203a Link source \u203a Pull).' }),
+      el('p', { class: 'hint', text: 'Both workbooks open in Excel and load back into VREstimator or VREST (Data \u203a Link source \u203a Pull).' }),
       el('div', { class: 'xio-ex' },
-        xBtn('VissRadEST import workbook', 'One sheet per table; headings are field keys.', exportTables),
+        xBtn('VREST import workbook', 'One sheet per table; headings are field keys.', exportTables),
         xBtn('Estimate takeoff workbook', 'Takeoff, MH library, Material prices, Craft rates, Crews, Weld factors.', exportHuman),
         xBtn('Estimate summary', 'Code-of-accounts build-up to TIC, by discipline and method.', exportSummary),
         xBtn('Takeoff Board measurements', 'Every item with its sheet, marks, quantities and assembly.', exportBoard),
@@ -168,7 +168,7 @@ function viewData(root) {
       const grids = await window.VRSheetIO.readGrids(f);
       const found = xioParse(grids);
       const keys = Object.keys(found);
-      if (!keys.length) { prev.appendChild(el('div', { class: 'banner bad', text: `${f.name}: no sheet matched a VissRadEST table or a takeoff layout (Description, Quantity, Unit).` })); return; }
+      if (!keys.length) { prev.appendChild(el('div', { class: 'banner bad', text: `${f.name}: no sheet matched a VREST table or a takeoff layout (Description, Quantity, Unit).` })); return; }
       const mode = el('select', {}, el('option', { value: 'merge' }, 'Merge: add new, update matching'), el('option', { value: 'replace' }, 'Replace the table'));
       const picks = {};
       prev.append(el('div', { class: 'hint', style: 'margin:8px 0 4px', text: `${f.name}: ${keys.length} table(s) recognized` }),
@@ -189,12 +189,12 @@ function viewData(root) {
   }
   const about = (title, extra) => ({ name: 'About this file', header: [title, ''], rows: [['Project', `${D.project.project_no} ${D.project.project_name}`], ['Written by', `${EST_BRAND} (VissRad)`], ['Written', new Date().toISOString().slice(0, 16).replace('T', ' ')], ...extra] });
   function exportTables() {
-    const sheets = [about('VissRadEST import workbook', [['Sheet names', 'Exactly the table name. Headings are exactly the field keys.'], ['How to load', 'VREstimator: Import / Export > Choose workbook. VissRadEST: Data > Link source > Pull.']])];
+    const sheets = [about('VREST import workbook', [['Sheet names', 'Exactly the table name. Headings are exactly the field keys.'], ['How to load', 'VREstimator: Import / Export > Choose workbook. VREST: Data > Link source > Pull.']])];
     Object.entries(XIO_TABLES).forEach(([t, d]) => sheets.push({ name: t, header: d.fields, rows: xioCurrent(t).map((r) => d.fields.map((f) => (r[f] === null || r[f] === undefined ? '' : r[f]))) }));
-    vrestDownloadXlsx(`VissRadEST-import-workbook-${D.project.project_no}.xlsx`, sheets);
+    vrestDownloadXlsx(`VREST-import-workbook-${D.project.project_no}.xlsx`, sheets);
   }
   function exportHuman() {
-    const sheets = [about('Estimate takeoff workbook', [['Feeds', 'VissRadEST / VREstimator - Takeoff, MH library, Material prices, Crafts, Crews, Crew members and Weld factors.']])];
+    const sheets = [about('Estimate takeoff workbook', [['Feeds', 'VREST / VREstimator - Takeoff, MH library, Material prices, Crafts, Crews, Crew members and Weld factors.']])];
     ['takeoff_lines', 'mh_library', 'material_prices', 'crafts', 'crews', 'crew_members', 'weld_factors'].forEach((t) => {
       const d = XIO_TABLES[t]; const cols = Object.entries(d.humanCols).filter(([h], i, a) => a.findIndex((x) => x[1] === d.humanCols[h]) === i);
       sheets.push({ name: d.human, header: cols.map((c) => c[0]), rows: xioCurrent(t).map((r) => cols.map(([, f]) => (r[f] === null || r[f] === undefined ? '' : r[f]))) });

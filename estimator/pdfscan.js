@@ -1,5 +1,5 @@
 /* ==========================================================================
-   VissRadEST — Scan drawings (PDF).
+   VREST — Scan drawings (PDF).
    Reads piping isometrics, P&IDs and other drawings and pulls out what is
    printed on them, then proposes takeoff lines from fixed, visible rules:
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   VissRadEST — Estimating (browser module)
+   VREST — Estimating (browser module)
 
    A browser build of an AACE Class 1-5 EPC estimating workbench, modelled on
    Master-EPC-Estimate-Tool.xlsx (see /home/user/workspace/handoff/
@@ -18,9 +18,9 @@
    ========================================================================== */
 'use strict';
 
-/* VREstimator: VissRadEST engine + PlanSwift-style Takeoff Board and assemblies
+/* VREstimator: VREST engine + PlanSwift-style Takeoff Board and assemblies
    (board.js) + InEight-style cost breakdown, resources and what-if (cbs.js) +
-   VissRadEST workbook import/export (xio.js). */
+   VREST workbook import/export (xio.js). */
 const MODULE_ID = 'estimating';
 const LS_KEY = window.VR_STANDALONE ? 'vrestimator.estimate.v1' : 'vissrad.estimating.v1';
 const STORE = makeStore(LS_KEY);
@@ -581,7 +581,7 @@ function estWindowsInit() {
 }
 
 /* Deep links:  ?line=<TKL-no>  open a takeoff line
-                ?new_takeoff=1&mk=&mq=  post measurements sent from VissRad Markup */
+                ?new_takeoff=1&mk=&mq=  post measurements sent from VRMarkup */
 function estOpenFromLink() {
   const q = suiteTakeParams(['line', 'new_takeoff', 'mk', 'mq']);
   if (q.line) {

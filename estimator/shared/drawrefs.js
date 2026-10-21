@@ -7,7 +7,7 @@
 
      drawing_refs: [{ type: 'PID' | 'ISO' | ..., doc_no, sheet, rev }]
 
-   The drawing numbers come from the VissRadDEng register as DEng last
+   The drawing numbers come from the VRDEng register as DEng last
    published it (vissrad.deng.link.v1). In the demonstration the seeded DEng
    register stands in when DEng has not been opened yet. A number that is not
    on the register can still be typed in (a client drawing, a vendor drawing,
@@ -17,7 +17,7 @@
    later revision the reference is flagged, so an estimate priced on rev 0 of
    an isometric shows that rev 1 has since been issued.
 
-   The same register carries the VissRadDEng document repository (repository
+   The same register carries the VRDEng document repository (repository
    documents, specification sections and which revisions have a file), so a
    chip shows when the file is on hand and opens the document in DEng's
    Documents tab (?doc=<number>&rev=<rev>). docChip() makes a chip for a plain
@@ -64,7 +64,7 @@ let DREF_WAIT = null;
 /** Load the drawing register once. Resolves to the register (possibly empty). */
 function drawRegisterLoad() {
   if (DREF_WAIT) return DREF_WAIT;
-  /* A standalone build (VRPlanner, VRTAR) has no VissRadDEng: numbers are kept as typed. */
+  /* A standalone build (VRPlanner, VRTAR) has no VRDEng: numbers are kept as typed. */
   if (window.VR_STANDALONE) { DREF_REG = []; DREF_WAIT = Promise.resolve(DREF_REG); return DREF_WAIT; }
   let L = null;
   if (typeof suiteLinkRead === 'function') L = suiteLinkRead('deng');
@@ -197,7 +197,7 @@ function drefHas(refs, types) {
   return (refs || []).some((r) => !types || types.includes(r.type));
 }
 
-/** Open a document in VissRadDEng (the file when one is attached, otherwise its row in Documents). */
+/** Open a document in VRDEng (the file when one is attached, otherwise its row in Documents). */
 function drefOpen(ref) {
   const p = { doc: ref.doc_no };
   if (ref.rev !== undefined && ref.rev !== null && ref.rev !== '') p.rev = ref.rev;
@@ -221,7 +221,7 @@ function drawRefChips(refs, opts = {}) {
     const onFile = reg ? drefOnFile(r.doc_no, r.rev || reg.rev) : '';
     return el('button', {
       type: 'button', class: `dref-chip dref-${st}`,
-      title: `${DREF_LABEL[r.type] || r.type} ${r.doc_no}${r.sheet ? ` sheet ${r.sheet}` : ''}${r.rev ? ` rev ${r.rev}` : ''}${reg ? ` \u2014 ${reg.title}` : ''}${warn}${onFile ? ' \u2014 file on hand' : ''}${reg ? '. Open in VissRadDEng.' : ''}`,
+      title: `${DREF_LABEL[r.type] || r.type} ${r.doc_no}${r.sheet ? ` sheet ${r.sheet}` : ''}${r.rev ? ` rev ${r.rev}` : ''}${reg ? ` \u2014 ${reg.title}` : ''}${warn}${onFile ? ' \u2014 file on hand' : ''}${reg ? '. Open in VRDEng.' : ''}`,
       onclick: (e) => { e.stopPropagation(); if (reg) drefOpen({ ...r, pin: opts.pin }); },
     },
     el('span', { class: 'dref-type', text: r.type === 'PID' ? 'P&ID' : r.type }),
@@ -292,7 +292,7 @@ function drawRefsEditor(refs, opts = {}) {
       const revIn = el('input', { type: 'text', class: 'dref-r', value: r.rev || '', placeholder: 'Rev', oninput: (e) => { r.rev = e.target.value; setHint(); } });
       const del = el('button', { type: 'button', class: 'ghost dref-x', title: 'Remove this reference', onclick: () => { rows.splice(i, 1); draw(); } }, '\u00d7');
       const openB = el('button', {
-        type: 'button', class: 'ghost dref-o', title: 'Open in VissRadDEng. Save first: changes in this dialog are not kept.',
+        type: 'button', class: 'ghost dref-o', title: 'Open in VRDEng. Save first: changes in this dialog are not kept.',
         onclick: () => { const g = drawRegisterGet(r.doc_no); if (!g) return; if (typeof closeModal === 'function') closeModal(); drefOpen({ ...r, doc_no: g.doc_no }); },
       }, 'Open');
       function setHint() {
@@ -315,7 +315,7 @@ function drawRefsEditor(refs, opts = {}) {
   const add = el('div', { class: 'dref-add' },
     quick.map((t) => el('button', { type: 'button', class: 'ghost', onclick: () => { rows.push({ type: t, doc_no: '', sheet: '', rev: '' }); draw(); const ins = body.querySelectorAll('.dref-n'); if (ins.length) ins[ins.length - 1].focus(); } }, `+ ${DREF_LABEL[t] || t}`)),
     el('button', { type: 'button', class: 'ghost', onclick: () => { rows.push({ type: 'OTH', doc_no: '', sheet: '', rev: '' }); draw(); } }, '+ Other document'),
-    el('span', { class: 'dref-src', text: opts.check === false ? (useReg ? 'Plant drawing numbers: type them, or pick from the DEng register' : 'Plant drawing numbers: type them as shown on the drawing') : DREF_FROM === 'deng' ? 'Numbers from the VissRadDEng register and document repository' : DREF_FROM === 'demo' ? 'Numbers from the demonstration DEng register and repository' : 'No DEng register found: type the numbers' }));
+    el('span', { class: 'dref-src', text: opts.check === false ? (useReg ? 'Plant drawing numbers: type them, or pick from the DEng register' : 'Plant drawing numbers: type them as shown on the drawing') : DREF_FROM === 'deng' ? 'Numbers from the VRDEng register and document repository' : DREF_FROM === 'demo' ? 'Numbers from the demonstration DEng register and repository' : 'No DEng register found: type the numbers' }));
   wrap.appendChild(body);
   wrap.appendChild(add);
   return { el: wrap, value: () => drefClean(rows) };

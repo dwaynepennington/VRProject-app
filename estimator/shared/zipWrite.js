@@ -1,7 +1,7 @@
 /* ===========================================================
    zipWrite.js — minimal ZIP (stored, no compression) writer.
 
-   VissRadConstruction has to hand a planner a real .xlsx file, and an
+   VRConstruction has to hand a planner a real .xlsx file, and an
    .xlsx is a ZIP of XML parts. The suite carries no third-party
    spreadsheet library, so the container is built here: local file
    headers, a central directory and an end-of-central-directory

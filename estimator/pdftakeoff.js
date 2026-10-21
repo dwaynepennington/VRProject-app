@@ -1,11 +1,11 @@
 /* One code base, two homes: VREstimator (standalone builds set VR_STANDALONE)
-   and VissRadEST inside the VissRad Suite (web/estimating, shared files one
+   and VREST inside the VissRad Suite (web/estimating, shared files one
    level up). EST_BRAND names the tool in titles, files and messages;
    EST_ROOT is where vendor/ and shared/ sit. */
-window.EST_BRAND = window.VR_STANDALONE ? 'VREstimator' : 'VissRadEST';
+window.EST_BRAND = window.VR_STANDALONE ? 'VREstimator' : 'VREST';
 window.EST_ROOT = window.VR_STANDALONE ? '' : '../';
 /* ==========================================================================
-   VissRadEST — drawing takeoff from PDF.
+   VREST — drawing takeoff from PDF.
    Open a PDF drawing (or, in demo mode, a sample drawing from DEng), set the
    scale from a known dimension, then measure:
      Count  — one click per item (valves, supports, foundations, devices)
@@ -531,7 +531,7 @@ function openPdfTakeoff(onPosted) {
 }
 
 /* ==========================================================================
-   Measurements sent from VissRad Markup (?new_takeoff=1&mk=…&mq=…).
+   Measurements sent from VRMarkup (?new_takeoff=1&mk=…&mq=…).
    Each length, area or count arrives in feet / square feet / each (or metres);
    the estimator picks the library item, and each one is posted as a takeoff
    line carrying the drawing, page and scale. The line number is written back
@@ -550,7 +550,7 @@ function mkToFeet(it) {
 function openMarkupTakeoff(mq, mkRef, onPosted) {
   let ref = null; try { ref = mkRef ? JSON.parse(mkRef) : null; } catch (e) { ref = null; }
   const items = (mq && Array.isArray(mq.items) ? mq.items : []).filter((i) => MK_KIND[i.t] && Number(i.v) > 0);
-  if (!items.length) { toast('No measurements arrived from VissRad Markup', true); return; }
+  if (!items.length) { toast('No measurements arrived from VRMarkup', true); return; }
   const docLabel = mq.doc ? `${mq.doc}${mq.rev ? ` rev ${mq.rev}` : ''}` : (mq.title || mq.name || 'drawing');
   const disc = el('select', { 'aria-label': 'Discipline' }, ...D.disciplines.map((d) => el('option', { value: d.discipline }, d.discipline)));
   const area = el('select', { 'aria-label': 'Area' }, ...D.areas.map((a) => el('option', { value: a.area_code }, `${a.area_code} \u2014 ${a.area_name}`)));
@@ -598,7 +598,7 @@ function openMarkupTakeoff(mq, mkRef, onPosted) {
     el('table', { class: 'tbl', style: 'width:100%;margin-top:10px' },
       el('thead', {}, el('tr', {}, el('th', {}, ''), el('th', {}, 'Measurement'), el('th', {}, 'Discipline'), el('th', {}, 'Library item'), el('th', { class: 'num' }, 'Quantity'))), tbody));
   modal({
-    title: 'Takeoff from VissRad Markup', sub: docLabel, width: 980, body,
+    title: 'Takeoff from VRMarkup', sub: docLabel, width: 980, body,
     buttons: [
       { label: 'Cancel', onClick: closeModal },
       { label: 'Post takeoff lines', primary: true, onClick: post },
@@ -623,7 +623,7 @@ function openMarkupTakeoff(mq, mkRef, onPosted) {
         description: r.it.n || lib.description, quantity: qty, uom: lib.uom, unit: lib.uom,
         discipline_factor: 1, global_factor: 1, item_factor: 1, weld_key: '', craft: craft.value,
         drawing_refs: refs,
-        source: `VissRad Markup: ${docLabel} p${r.it.p || 1}, ${MK_NAME[r.it.t].toLowerCase()} ${r.it.x || ''}${mq.scale && r.it.t !== 'mcount' ? `, ${mq.scale}` : ''}`,
+        source: `VRMarkup: ${docLabel} p${r.it.p || 1}, ${MK_NAME[r.it.t].toLowerCase()} ${r.it.x || ''}${mq.scale && r.it.t !== 'mcount' ? `, ${mq.scale}` : ''}`,
       };
       D.takeoff_lines.push(line);
       audit('takeoff_line', lineNo, 'create', null, `${line.discipline} ${line.master_key} qty ${qty} ${line.uom} \u2014 ${line.source}`);

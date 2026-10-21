@@ -3,9 +3,9 @@
 
    The board keeps every measurement on the drawing. A takeoff item is a
    named, coloured set of marks (areas, runs or counts) on a sheet. Each item
-   either prices one VissRadEST library key, or carries an assembly: a list of
+   either prices one VREST library key, or carries an assembly: a list of
    library keys with quantity formulas driven by the measured quantity. The
-   item writes and keeps up to date ordinary VissRadEST takeoff lines
+   item writes and keeps up to date ordinary VREST takeoff lines
    (board_item = item id), so the Methods switch, indirects, benchmark,
    proposal and QA gate all work on board quantities without change.
 
@@ -599,7 +599,7 @@ function viewAssemblies(root) {
   const libOpts = D.mh_library.map((l) => [l.key, `${l.key} \u2014 ${l.work_item || l.description} (${l.unit})`]);
   const sample = { area: { Q: 1000, P: 130, N: 1 }, linear: { Q: 100, P: 100, N: 1 }, count: { Q: 1, P: 0, N: 1 } };
   root.appendChild(el('div', { class: 'banner info', style: 'margin-bottom:10px' },
-    'An assembly turns one measurement into many library items. Formulas use Q (measured SF, LF or EA), P (perimeter or length, LF), D (depth ft), H (height ft), N (marks), with sqrt, ceil, round, max, min and PI. Every row prices through the VissRadEST man-hour library, material prices, crafts and weld factors. ',
+    'An assembly turns one measurement into many library items. Formulas use Q (measured SF, LF or EA), P (perimeter or length, LF), D (depth ft), H (height ft), N (marks), with sqrt, ceil, round, max, min and PI. Every row prices through the VREST man-hour library, material prices, crafts and weld factors. ',
     demoFlag('Demo factors')));
   root.appendChild(toolbar(el('button', { class: 'primary', onclick: () => newAsm() }, '+ New assembly'), el('span', { class: 'hint', text: `${D.assemblies.length} assemblies` })));
   const host = el('div', { class: 'asm-grid' });
