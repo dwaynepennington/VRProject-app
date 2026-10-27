@@ -400,6 +400,8 @@ function suiteChrome({ moduleId, title, subtitle, onReset, onTheme, file }) {
     el('div', { class: 'title-block' },
       el('h1', { text: SUITE_STANDALONE && SUITE_STANDALONE.title ? SUITE_STANDALONE.title : title }),
       el('div', { class: 'sub', id: 'proj-sub', text: subtitle || '' })),
+    SUITE_STANDALONE && typeof suiteToolMenu === 'function' && Array.isArray(SUITE_STANDALONE.tools) && SUITE_STANDALONE.tools.length > 1 && !SUITE_STANDALONE.toolBar
+      ? suiteToolMenu(SUITE_STANDALONE.tools) : null,
     el('div', { class: 'spacer' }),
     SUITE_STANDALONE && SUITE_STANDALONE.home
       ? el('a', { class: 'ghost btn-link', id: 'btn-home', href: SUITE_STANDALONE.home, target: '_blank', rel: 'noopener', title: 'VissRad — Suite of Interactive Smart Tools for Project Delivery' }, SUITE_STANDALONE.homeLabel || 'VissRad ↗')
@@ -422,7 +424,7 @@ function suiteChrome({ moduleId, title, subtitle, onReset, onTheme, file }) {
     }, 'Light mode'));
 
   if (!SUITE_STANDALONE) app.prepend(suiteRail(moduleId));
-  else if (typeof suiteToolBar === 'function' && Array.isArray(SUITE_STANDALONE.tools) && SUITE_STANDALONE.tools.length > 1) app.prepend(suiteToolBar(SUITE_STANDALONE.tools));
+  else if (SUITE_STANDALONE.toolBar && typeof suiteToolBar === 'function' && Array.isArray(SUITE_STANDALONE.tools) && SUITE_STANDALONE.tools.length > 1) app.prepend(suiteToolBar(SUITE_STANDALONE.tools));
   app.prepend(head);
   suiteApplyTheme(suiteInitialTheme(), null);
   if (window.VRUSER) window.VRUSER.decorate(head);

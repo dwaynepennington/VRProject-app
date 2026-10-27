@@ -638,3 +638,25 @@ a.lnk:hover { text-decoration: underline; }
 .vrr-modal { max-height: min(70vh, 640px); overflow: auto; }
 .vrr-assign .vrr-table select { max-width: 320px; }
 .vrr-table td.vrr-used { white-space: normal; max-width: 150px; font-size: 11.5px; line-height: 1.25; }
+
+/* Standalone builds: the tool switcher (shared/standalone.js suiteToolMenu). */
+.toolmenu { position: relative; flex: 0 0 auto; }
+.toolmenu-btn { display: inline-flex; align-items: center; gap: 7px; }
+.toolmenu-btn .toolmenu-v { font-size: 10.5px; line-height: 1; padding: 2px 6px; border-radius: 9px; background: var(--panel-hi); color: var(--text-dim); }
+.toolmenu-btn .toolmenu-car { font-size: 10px; color: var(--text-dim); }
+.toolmenu-btn[aria-expanded="true"] { border-color: var(--accent); }
+.toolmenu-list { position: absolute; z-index: 1000; top: calc(100% + 6px); left: 0; width: 440px; max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 80px); overflow: auto; padding: 6px; background: var(--panel); border: 1px solid var(--border-hi, var(--border));
+  border-radius: 8px; box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45); }
+.toolmenu-list[hidden] { display: none; }
+.toolmenu-grp + .toolmenu-grp { border-top: 1px solid var(--border); margin-top: 4px; padding-top: 4px; }
+.toolmenu-gl { padding: 6px 10px 3px; font-size: 10.5px; letter-spacing: 0.9px; text-transform: uppercase; color: var(--text-faint, var(--text-dim)); }
+.toolmenu-item { display: flex; flex-direction: column; gap: 1px; padding: 6px 10px; border-radius: 6px; color: var(--text); text-decoration: none; border-left: 2px solid transparent; }
+.toolmenu-item .tm-name { font-weight: 600; font-size: 13px; }
+.toolmenu-item .tm-sub { font-size: 11.5px; color: var(--text-dim); line-height: 1.35; }
+.toolmenu-item:hover, .toolmenu-item:focus { background: var(--panel-hi); outline: none; }
+.toolmenu-item:focus-visible { box-shadow: inset 0 0 0 2px var(--accent); }
+.toolmenu-item.active { border-left-color: var(--accent); }
+.toolmenu-item.active .tm-name::after { content: ' \00b7 open'; font-weight: 400; color: var(--text-dim); font-size: 11.5px; }
+@media (max-width: 720px) { .toolmenu-list { position: fixed; left: 12px; right: 12px; width: auto; top: 56px; } }
+@media print { .toolmenu { display: none !important; } }
