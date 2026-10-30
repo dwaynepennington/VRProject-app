@@ -316,7 +316,7 @@ const pkHeadsOf = (p) => { const w = p.rows.reduce((a, r) => a + r.mh, 0); retur
 /** VRProject: hand the schedule to the VRScheduler Schedule Editor on the
     same site (same handoff as VRPlanner / VRTAR / VRCMMS). */
 const SCH_TO_SCHEDULE_KEY = 'vissrad.plan.toschedule.v1';
-function schedEditorUrl() { const s = window.VR_STANDALONE; return s ? (s.schedule || '') : '../schedule/index.html'; }
+function schedEditorUrl() { const s = window.VR_STANDALONE; return s ? (s.schedule || '') : '../index.html#editor'; }
 const SCHED_EDITOR_NAME = window.VR_STANDALONE ? 'the VRScheduler Schedule Editor' : 'the VRSCH Schedule Editor';
 function schedSend() {
   const M = schedBuild();

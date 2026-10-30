@@ -12,9 +12,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="shared/shell.css?v=29bafaa406">
-<link rel="stylesheet" href="estimating.css?v=9a2b50e016">
-<link rel="stylesheet" href="vrest.css?v=c938269437">
+<link rel="stylesheet" href="shared/shell.css?v=24faf91eef">
+<link rel="stylesheet" href="estimating.css?v=57a4582bc8">
+<link rel="stylesheet" href="vrest.css?v=4c6f2cb7e0">
 </head>
 <body>
 
@@ -29,23 +29,23 @@
   <footer class="statusbar" id="statusbar"></footer>
 </div>
 
-<script>window.VR_STANDALONE = { title: "VREstimator", home: "https://vissrad.com/", homeLabel: "VissRad \u2197", up: "../", toolBar: true, tools: [{ label: "VRScheduler", href: "../index.html", title: "VRScheduler — CPM schedule editor and P6 schedule analysis", group: "Schedule and estimate" }, { label: "VREstimator", href: "../estimator/index.html", title: "VREstimator — drawing takeoff, assemblies and EPC estimating, sent to the schedule", group: "Schedule and estimate", active: true }, { label: "VRPlanner", href: "../planner/index.html", title: "VRPlanner — capital work planning: work steps, crews, equipment, loaded into the schedule", group: "Planners" }, { label: "VRDCPlanner", href: "../dcplan/index.html", title: "VRDCPlanner — data center construction planning: power, cooling, white space and commissioning L1 to L5", group: "Planners" }, { label: "VRE&IPlanner", href: "../eiplan/index.html", title: "VRE&IPlanner — electrical and instrumentation planning: raceway, cable, terminations, testing and loop checks", group: "Planners" }, { label: "VRPowerPlanner", href: "../pwrplan/index.html", title: "VRPowerPlanner — power plant construction planning for data center campuses: engines, gas turbines, fuel cells, BESS and switchyard", group: "Planners" }, { label: "VRPowerOutage", href: "../pwrout/index.html", title: "VRPowerOutage — power plant outage planning: gas turbine inspections, engine overhauls, HRSG, transformers and return to service", group: "Planners" }, { label: "VRUpstreamPlanner", href: "../upplan/index.html", title: "VRUpstreamPlanner — upstream field development planning: well pads, hook-up, flowlines, central facility and first oil", group: "Planners" }, { label: "VRMidstreamPlanner", href: "../midplan/index.html", title: "VRMidstreamPlanner — midstream planning: pipeline spreads, HDD and bores, compressor, pump and meter stations, terminals", group: "Planners" }, { label: "VRRailHighwayPlanner", href: "../rhplan/index.html", title: "VRRailHighwayPlanner — rail and heavy highway planning: traffic phases, earthwork, paving, bridges, track, turnouts, crossings and signals", group: "Planners" }, { label: "VRTAR", href: "../tar/index.html", title: "VRTAR — turnaround estimating", group: "Turnaround and maintenance" }, { label: "VRCMMS", href: "../cmms/index.html", title: "VRCMMS — maintenance management: assets, work orders, preventive maintenance and backlog", group: "Turnaround and maintenance" }], file: true, schedule: "../index.html#editor" };</script>
-<script src="shared/lib.js?v=d5788ff27b"></script>
-<script src="shared/shell.js?v=f9387506df"></script>
-<script src="shared/standalone.js?v=df6241ee6f"></script>
-<script src="shared/drawrefs.js?v=50d52076ea"></script>
-<script src="shared/sheetio.js?v=32e1190cd3"></script>
-<script src="pdftakeoff.js?v=6d6e8a94b5"></script>
-<script src="board.js?v=e53436ddc1"></script>
-<script src="cbs.js?v=21174ff2e7"></script>
-<script src="crews.js?v=e111138336"></script>
-<script src="dxf.js?v=f7943d93e5"></script>
-<script src="samples/cad/cad-demo.js?v=9e3c5568d5"></script>
-<script src="cadtakeoff.js?v=3b4f947d29"></script>
+<script>window.VR_STANDALONE = { title: "VREstimator", home: "https://vissrad.com/", homeLabel: "VissRad \u2197", up: "../", toolBar: true, tools: [{ label: "VRScheduler", href: "../index.html", title: "VRScheduler — CPM schedule editor and P6 schedule analysis", group: "Schedule and estimate" }, { label: "VREstimator", href: "../estimator/index.html", title: "VREstimator — drawing takeoff, assemblies and EPC estimating, sent to the schedule", group: "Schedule and estimate", active: true }, { label: "VRPlanner", href: "../planner/index.html", title: "VRPlanner — capital work planning: work steps, crews, equipment, loaded into the schedule", group: "Planners" }, { label: "VRDCPlanner", href: "../dcplan/index.html", title: "VRDCPlanner — data center construction planning: power, cooling, white space and commissioning L1 to L5", group: "Planners" }, { label: "VRE&IPlanner", href: "../eiplan/index.html", title: "VRE&IPlanner — electrical and instrumentation planning: raceway, cable, terminations, testing and loop checks", group: "Planners" }, { label: "VRPowerPlanner", href: "../pwrplan/index.html", title: "VRPowerPlanner — power plant construction planning for data center campuses: engines, gas turbines, fuel cells, BESS and switchyard", group: "Planners" }, { label: "VRPowerOutage", href: "../pwrout/index.html", title: "VRPowerOutage — power plant outage planning: gas turbine inspections, engine overhauls, HRSG, transformers and return to service", group: "Planners" }, { label: "VRUpstreamPlanner", href: "../upplan/index.html", title: "VRUpstreamPlanner — upstream field development planning: well pads, hook-up, flowlines, central facility and first oil", group: "Planners" }, { label: "VRMidstreamPlanner", href: "../midplan/index.html", title: "VRMidstreamPlanner — midstream planning: pipeline spreads, HDD and bores, compressor, pump and meter stations, terminals", group: "Planners" }, { label: "VRRailHighwayPlanner", href: "../rhplan/index.html", title: "VRRailHighwayPlanner — rail and heavy highway planning: traffic phases, earthwork, paving, bridges, track, turnouts, crossings and signals", group: "Planners" }, { label: "VRTAR", href: "../tar/index.html", title: "VRTAR — turnaround estimating", group: "Turnaround and maintenance" }, { label: "VRCMMS", href: "../cmms/index.html", title: "VRCMMS — maintenance management: assets, work orders, preventive maintenance and backlog", group: "Turnaround and maintenance" }, { label: "VRControls", href: "../controls/index.html", title: "VRControls — project controls and cost tracking: budget, earned and actual hours, SPI and CPI, progress from P6 / MS Project updates, completions and punch", group: "Project controls" }], file: true, schedule: "../index.html#editor", controls: "../controls/index.html#/schedule" };</script>
+<script src="shared/lib.js?v=816057450e"></script>
+<script src="shared/shell.js?v=006337a1d6"></script>
+<script src="shared/standalone.js?v=65c06335f3"></script>
+<script src="shared/drawrefs.js?v=4852b0798c"></script>
+<script src="shared/sheetio.js?v=e830c55d8d"></script>
+<script src="pdftakeoff.js?v=abf1cbcc9a"></script>
+<script src="board.js?v=765b79a2e0"></script>
+<script src="cbs.js?v=12a1a02be3"></script>
+<script src="crews.js?v=0b7b31b527"></script>
+<script src="dxf.js?v=0484c9f34d"></script>
+<script src="samples/cad/cad-demo.js?v=d76ac8ddfe"></script>
+<script src="cadtakeoff.js?v=308e7af828"></script>
 <script src="vendor/vrtar-writers.js?v=766750a336"></script>
-<script src="schedule.js?v=ea4347a707"></script>
-<script src="xio.js?v=e7962816ef"></script>
-<script src="data.js?v=66290acbe7"></script>
-<script src="app.js?v=f4f3403fe6"></script>
+<script src="schedule.js?v=86d976e7e4"></script>
+<script src="xio.js?v=721aa84062"></script>
+<script src="data.js?v=12335bfe03"></script>
+<script src="app.js?v=c3b8f09e86"></script>
 </body>
 </html>
